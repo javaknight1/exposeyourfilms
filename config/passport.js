@@ -50,7 +50,6 @@ module.exports = function(passport) {
         function(req, username, email, firstname, lastname, password, repassword, done) {
 
             //check if email given is a valid email
-
             if(!validator.isEmail(email)){
                 return done(null, false, req.flash('signupMessage', 'Not a valid email.'));
             }
