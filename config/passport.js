@@ -21,6 +21,7 @@ module.exports = function(passport) {
 
     // used to serialize the user for the session
     passport.serializeUser(function(user, done) {
+    	console.log("USER: " + user.id);
         done(null, user.id);
     });
 
@@ -40,30 +41,34 @@ module.exports = function(passport) {
     passport.use('local-signup', new LocalStrategy({
             // by default, local strategy uses username and password, we will override with email
             usernameField : 'username',
-            emailField: 'email',
-            firstnameField: 'firstname',
-            lastnameField: 'lastname',
             passwordField : 'password',
-            repasswordField: 'repassword',
             passReqToCallback : true // allows us to pass back the entire request to the callback
         },
-        function(req, username, email, firstname, lastname, password, repassword, done) {
+        function(req, username, password, done) {
 
+            //Sanitizer strings
+        	email = req.body.email;
+            username = validator.toString(username);
+            firstname = validator.toString(req.body.firstname);
+            lastname = validator.toString(req.body.lastname);
+            password = validator.toString(password);
+            repassword = validator.toString(req.body.repassword);
+            status = validator.toInt(req.body.status);
+            
             //check if email given is a valid email
             if(!validator.isEmail(email)){
                 return done(null, false, req.flash('signupMessage', 'Not a valid email.'));
             }
-
+        	
         	//check if the passwords match
         	if(password != repassword){
         		return done(null, false, req.flash('signupMessage', 'Passwords don\'t match.'));
         	}
-
-            //Sanitizer strings
-            username = validator.toString(username);
-            firstname = validator.toString(firstname);
-            lastname = validator.toString(lastname);
-            password = validator.toString(password);
+        	
+        	//check if it gave a valid membership value
+        	if(!(status == 1 || status == 0)){
+        		return done(null, false, req.flash('signupMessage', 'Invalid membership given.'));
+        	}
 
             // find a user whose email is the same as the forms email
             // we are checking to see if the user trying to login already exists
@@ -83,15 +88,21 @@ module.exports = function(passport) {
                         lastname: lastname,
                         //password: bcrypt.hashSync(password, salt),  // use the generateHash function in our user model
                         password: sha(password + salt),  // use the generateHash function in our user model
-                        salt: salt
+                        salt: salt,
+                        status: status
                     };
-
+                    
                     var insertQuery = "INSERT INTO members (first_name, last_name, username, email, password, salt, status) values (?,?,?,?,?,?,?)";
-
                     connection.query(insertQuery,[u.firstname, u.lastname, u.username, u.email, u.password, u.salt, u.status],function(err, rows) {
-                        console.log("Created new user.")
+                        
+                    	if(err){
+                    		console.log("Failed: Insert user");
+                    		console.log("SQL Error: " + err);
+                    		return done(err);
+                        }
+                    		
                     	u.id = rows.insertId;
-
+                    	
                         //remove sensitive data
                         delete u["password"];
                         delete u["salt"];

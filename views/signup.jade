@@ -10,10 +10,16 @@ block content
         |                         
         .panel-body
           form#signupform.form-horizontal(role='form' action='/signup' method='post')
-            #signupalert.alert.alert-danger(style='display:none')
-              p Error:
-              |                                     
-              span
+            if message.length > 0
+              #signupalert.alert.alert-danger(style='')
+                p Error: #{message}
+                |                                     
+                span
+            else
+              #signupalert.alert.alert-danger(style='display:none')
+                p Error: #{message}
+                |                                     
+                span
             |                                     
             |                                 
             |                                   
@@ -66,11 +72,11 @@ block content
               .col-md-9
                 .radio
                   label
-                    input#optionsRadios1(type='radio', name='optionsRadios', value='1', checked='')
+                    input#optionsRadios1(type='radio', name='status', value='1', checked='')
                     | Basic
                 .radio
                   label
-                    input#optionsRadios2(type='radio', name='optionsRadios', value='0')
+                    input#optionsRadios2(type='radio', name='status', value='0')
                     | Filmmaker
             |                                 
             .form-group

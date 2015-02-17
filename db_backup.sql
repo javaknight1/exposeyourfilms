@@ -92,7 +92,7 @@ CREATE TABLE `ads` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `ads`
+-- Dfilmsumping data for table `ads`
 --
 
 LOCK TABLES `ads` WRITE;
