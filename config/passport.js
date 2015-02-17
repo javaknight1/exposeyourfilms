@@ -89,8 +89,13 @@ module.exports = function(passport) {
                     var insertQuery = "INSERT INTO members (first_name, last_name, username, email, password, salt, status) values (?,?,?,?,?,?,?)";
 
                     connection.query(insertQuery,[u.firstname, u.lastname, u.username, u.email, u.password, u.salt, u.status],function(err, rows) {
-                        u.id = rows.insertId;
+                        console.log("Created new user.")
+                    	u.id = rows.insertId;
 
+                        //remove sensitive data
+                        delete u["password"];
+                        delete u["salt"];
+                        
                         return done(null, u);
                     });
                 }
