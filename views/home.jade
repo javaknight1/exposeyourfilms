@@ -1,0 +1,54 @@
+extends layout
+
+block content
+  - var len = 8
+  #carousel-example-generic.carousel.slide(data-ride='carousel')
+    // Indicators
+    ol.carousel-indicators
+      li.active(data-target='#carousel-example-generic', data-slide-to='0')
+      - for (var x = 1; x < len; x++)
+          |     
+          li(data-target='#carousel-example-generic', data-slide-to=x)
+    // Wrapper for slides
+    .carousel-inner
+      .item.active
+        img(src='images/1.jpg', alt='...')
+        |       
+        .carousel-caption
+          h3 Caption Text
+      - for (var x = 2; x < (len+1); x++)
+          .item
+            img(src='images/'+x+'.jpg', alt='...')
+            |       
+            .carousel-caption
+              h3 Caption Text
+    // Controls
+    a.left.carousel-control(href='#carousel-example-generic', role='button', data-slide='prev')
+      span.glyphicon.glyphicon-chevron-left
+    |   
+    a.right.carousel-control(href='#carousel-example-generic', role='button', data-slide='next')
+      span.glyphicon.glyphicon-chevron-right
+  h3 Featured
+  .my-thumbs-list.mThumbnailScroller(data-mts-axis="x" data-mts-type="hover-50")
+    ul
+      - for (var i = 0; i < 20; ++i) {
+          li
+            a(href='/film?id='+i)
+              img.brightness(src='/images/movie_covers/'+i+'.jpg') 
+      - }
+  h3 Popular
+  .my-thumbs-list.mThumbnailScroller(data-mts-axis="x")
+    ul
+      - for (var i = 20; i < 40; ++i) {
+          li
+            a(href='/film?id='+i)
+              img.brightness(src='/images/movie_covers/'+i+'.jpg') 
+      - }
+  h3 Recently Added
+  .my-thumbs-list.mThumbnailScroller(data-mts-axis="x")
+    ul
+      - for (var i = 40; i < 60; ++i) {
+          li
+            a(href='/film?id='+i)
+              img.brightness(src='/images/movie_covers/'+i+'.jpg') 
+      - }
