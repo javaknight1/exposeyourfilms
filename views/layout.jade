@@ -98,13 +98,13 @@ html(lang= "en")
     script(src='/javascripts/sha512.js')
 
     //block jsextra
-    script.
-      $(document).ready(function(){
-        var user, pass;
-        $("#btn-login").click(function(){
-          user = $("#login-username").val();
-          pass = hex_sha512($("#login-password").val());
-          console.log(pass);
-          $.post("http://localhost:3000/login", {username: user,password: pass});
-        });
-      });
+    //script.
+    //  $(document).ready(function(){
+    //    var user, pass;
+    //    $("#btn-login").click(function(){
+    //       user = $("#login-username").val();
+    //      pass = hex_sha512($("#login-password").val());
+    //      console.log(pass);
+    //      $.post("http://localhost:3000/login", {username: user,password: pass});
+    //    });
+    //  });

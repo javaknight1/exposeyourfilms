@@ -12,7 +12,10 @@ block content
             |      
             |                     
             .panel-body(style='padding-top:30px')
-              #login-alert.alert.alert-danger.col-sm-12(style='display:none') message
+              if message.length > 0
+                #login-alert.alert.alert-danger.col-sm-12(style='') #{message}
+              else
+                #login-alert.alert.alert-danger.col-sm-12(style='display:none')
               |                 
               |                         
               form#loginform.form-horizontal(role='form' action='/login' method='post')
@@ -40,9 +43,9 @@ block content
                 .form-group(style='margin-top:10px')
                   // Button
                   .col-sm-12.controls
-                    a#btn-login.btn.btn-success() Login  
+                    button#btn-login.btn.btn-success(type='submit') Login  
                     |                                       
-                    a#btn-fblogin.btn.btn-primary(href='#') Login with Facebook
+                    button#btn-fblogin.btn.btn-primary(href='#') Login with Facebook
                 |                                 
                 .form-group
                   .col-md-12.control
