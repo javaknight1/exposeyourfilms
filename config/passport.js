@@ -7,6 +7,7 @@ var bcrypt 		= require('bcrypt-nodejs');
 var sha         = require('js-sha512');
 var validator   = require('validator');
 var dbconfig 	= require('./database');
+var time		= require('time');
 var connection 	= mysql.createConnection(dbconfig.connection);
 
 connection.query('USE ' + dbconfig.database);
@@ -141,18 +142,50 @@ module.exports = function(passport) {
             password = validator.toString(password);
 
             connection.query("SELECT * FROM members WHERE " + check + " = ?",[username], function(err, rows){
+            	
                 if (err)
                     return done(err);
                 if (!rows.length) {
                     return done(null, false, req.flash('loginMessage', 'No ' + check + ' found.')); // req.flash is the way to set flashdata using connect-flash
                 }
+                                
+                var u = {
+                		id: rows[0].id,
+                        username: rows[0].username,
+                        email: rows[0].email,
+                        firstname: rows[0].firstname,
+                        lastname: rows[0].lastname,
+                        password: rows[0].password,
+                        salt: rows[0].salt,
+                        status: rows[0].status
+                };
                 
-                // if the user is found but the password is wrong
-                if (sha(password + rows[0].salt) != rows[0].password)
-                    return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
-                
-                // all is well, return successful user
-                return done(null, rows[0]);
+                //check if it's trying to be brute forced
+                var now = time.time();
+                var valid_attempts = now - (2 * 60 * 60);
+                var brute_query = "SELECT time FROM login_attempts WHERE user_id = " + u.id + " AND time > " + valid_attempts + "";
+                connection.query(brute_query, function(err, rows, fields){
+                	
+                	if(rows.length > 5){
+                        //account is trying to be brute forced
+                		console.log("Account id " + u.id + " is being brute forced.");
+                		//TODO: Somehow record this and report, by email, to the user to change password.
+                        return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.'));
+                    }
+                	
+                	// if the user is found but the password is wrong
+                    if (sha(password + u.salt) != u.password){
+                    	//record attempt to determine brute forces
+                        connection.query("INSERT INTO login_attempts(user_id, time) VALUES ('" + u.id + "', '" + now + "')", null);
+                        return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
+                    }
+                    //remove sensitive data
+                    delete u["password"];
+                    delete u["salt"];
+                                        
+                    // all is well, return successful user
+                    return done(null, u);
+                });
             });
         })
     );
