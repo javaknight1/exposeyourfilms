@@ -26,7 +26,8 @@ block content
 		|  
 		.tab-content.dashboard-content
 			#home.tab-pane.fade.active.in
-				include ./account_tabs/home_tab.jade
+				.tab-container
+					include ./account_tabs/home_tab.jade
 			| &#x9;
 			#purchased.tab-pane.fade Purchased Films
 			| &#x9;
@@ -36,6 +37,8 @@ block content
 			| &#x9;
 			#favorited.tab-pane.fade Favorited Films
 			| &#x9;
-			#following.tab-pane.fade Filmmakers Following
+			#following.tab-pane.fade
+				.tab-container
+					include ./account_tabs/following_tab.jade
 			| &#x9;
 			#settings.tab-pane.fade Settings
