@@ -1,0 +1,146 @@
+.tab-container
+      .row
+        // left column
+        .col-md-3
+          .text-center
+            img.avatar.img-circle(src='//placehold.it/100', alt='avatar')
+            |           
+            h6 Upload a different photo...
+            |           
+            |           
+            input.form-control(type='file')
+        // edit form column
+        .col-md-9.personal-info
+          .alert.alert-info.alert-dismissable
+            a.panel-close.close(data-dismiss='alert') &times;
+            |  
+            |           
+            i.fa.fa-coffee
+            |           This is an 
+            strong .alert
+            | . Use this to show important messages to the user.
+          |         
+          h3 Personal info
+          |         
+          |         
+          form.form-horizontal(role='form')
+            .form-group
+              label.col-lg-3.control-label First name:
+              |             
+              .col-lg-8
+                input.form-control(value='Jane', type='text')
+            |           
+            .form-group
+              label.col-lg-3.control-label Last name:
+              |             
+              .col-lg-8
+                input.form-control(value='Bishop', type='text')
+            |           
+            .form-group
+              label.col-lg-3.control-label Email:
+              |             
+              .col-lg-8
+                input.form-control(value='janesemail@gmail.com', type='text')
+            |           
+            .form-group
+              label.col-lg-3.control-label Country:
+              |             
+              .col-lg-8
+                .ui-select
+                  select#user_time_zone.form-control
+                    option(value='Hawaii') (GMT-10:00) Hawaii
+                    |                   
+                    option(value='Alaska') (GMT-09:00) Alaska
+                    |                   
+                    option(value='Pacific Time (US & Canada)') (GMT-08:00) Pacific Time (US &amp; Canada)
+                    |                   
+                    option(value='Arizona') (GMT-07:00) Arizona
+                    |                   
+                    option(value='Mountain Time (US & Canada)') (GMT-07:00) Mountain Time (US &amp; Canada)
+                    |                   
+                    option(value='Central Time (US & Canada)', selected='selected') Hong Kong
+                    |                   
+                    option(value='Eastern Time (US & Canada)') (GMT-05:00) Eastern Time (US &amp; Canada)
+                    |                   
+                    option(value='Indiana (East)') (GMT-05:00) Indiana (East)
+            |  
+            |           
+            .form-group
+              label.col-md-3.control-label Your username:
+              |             
+              .col-md-8
+                input.form-control(value='janeuser', type='text')
+            |           
+            |           
+            .form-group
+              label.col-lg-3.control-label Year of birth:
+              |             
+              .col-lg-8
+                .ui-select
+                  select#user_time_zone.form-control
+                    option(value='Central Time (US & Canada)', selected='selected') 2014
+                    |                   
+                    option(value='Eastern Time (US & Canada)') Male
+                    |                   
+                    option(value='Indiana (East)') I don&apos;t 
+            |             
+            |           
+            .form-group
+              label.col-lg-3.control-label Education level:
+              |             
+              .col-lg-8
+                .ui-select
+                  select#user_time_zone.form-control
+                    option(value='Central Time (US & Canada)', selected='selected') Degree
+                    |                   
+                    option(value='Eastern Time (US & Canada)') Male
+                    |                   
+                    option(value='Indiana (East)') I don&apos;t 
+            |           
+            |           
+            .form-group
+              label.col-md-3.control-label Mailing address:
+              |             
+              .col-md-8
+                textarea.form-control(row='6')
+            |           
+            |           
+            .form-group
+              label.col-md-3.control-label Tell us what you&apos;re interested in KEEP:
+              |             
+              .col-md-8
+                textarea.form-control(row='4')
+            |          
+            |   
+            .form-group
+              label.col-md-3.control-label Social Media1:
+              |     
+              .col-md-8
+                .input-group
+                  .input-group-addon http://facebook.com/
+                  |       
+                  input.form-control(type='text', placeholder='your name')
+            |             
+            .form-group
+              label.col-md-3.control-label Social Media2:
+              |     
+              .col-md-8
+                .input-group
+                  .input-group-addon http://linkedin.com/
+                  |       
+                  input.form-control(type='text', placeholder='your name')
+            |           
+            |           
+            .form-group
+              label.col-md-3.control-label
+              |             
+              .col-md-8
+                input.btn.btn-primary(value='Save Changes', type='button')
+                |               
+                span
+                |               
+                input.btn.btn-default(value='Cancel', type='reset')
+            |           
+            |       
+            |    
+            hr

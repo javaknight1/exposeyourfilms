@@ -36,13 +36,11 @@ module.exports = function(app, passport) {
             failureFlash : true // allow flash messages
         }));
 
-    // process the signup form
-    // app.post('/signup', do all our passport stuff here);
-
     // ======== ACCOUNT PAGE ========
     app.get('/account', isLoggedIn, getSessionInfo, function(req, res) {
         res.render('account', {
-            user : req.username // get the user out of session and pass to template
+            user : req.username, // get the user out of session and pass to template
+            status: req.status
         });
     });
 
@@ -102,5 +100,10 @@ function getSessionInfo(req, res, next){
     else
         req.lastname = "";
 
+    if(typeof req.user != "undefined" && typeof req.user.status != "undefined")
+        req.status = req.user.status;
+    else
+        req.status = 1;
+    
     return next();
 }

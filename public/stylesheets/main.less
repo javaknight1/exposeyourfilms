@@ -1,5 +1,5 @@
 @foot: 40px;
-@head: 50px;
+@head: 65px;
 
 html, body {
 	margin:0;
@@ -11,6 +11,7 @@ html, body {
 	position:relative;
 }
 #header {
+	min-height: @head;
 	//padding: @head;
 	//background:#5ee;
 }
@@ -72,4 +73,20 @@ html, body {
 	&:hover{
 		opacity: 1;
 	}
+}
+
+.dashboard-container {
+	padding-top: 15px;
+}
+
+.dashboard-content {
+	padding-top: 25px;
+}
+
+.tab-container{
+	width: 100%;
+	margin-right: auto;
+	margin-left: auto;
+	padding-left: 15px;
+	padding-right: 15px;
 }

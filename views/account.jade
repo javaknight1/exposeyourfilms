@@ -1,0 +1,41 @@
+extends layout
+
+block content
+	.container.dashboard-container
+		ul#myTab.nav.nav-tabs.nav-justified
+			li.active
+				a(href='#home' data-toggle='tab') Home
+				| &#x9;
+			li
+				a(href='#purchased' data-toggle='tab') Purchased
+				| &#x9;
+			li
+				a(href='#rented' data-toggle='tab') Rented
+				| &#x9;
+			li
+				a(href='#queued' data-toggle='tab') Queued
+				| &#x9;
+			li
+				a(href='#favorited' data-toggle='tab') Favorited
+				| &#x9;
+			li
+				a(href='#following' data-toggle='tab') Following
+				| &#x9;
+			li
+				a(href='#settings' data-toggle='tab') Settings
+		|  
+		.tab-content.dashboard-content
+			#home.tab-pane.fade.active.in
+				include ./account_tabs/home_tab.jade
+			| &#x9;
+			#purchased.tab-pane.fade Purchased Films
+			| &#x9;
+			#rented.tab-pane.fade Rented Films
+			| &#x9;
+			#queued.tab-pane.fade Queued Films
+			| &#x9;
+			#favorited.tab-pane.fade Favorited Films
+			| &#x9;
+			#following.tab-pane.fade Filmmakers Following
+			| &#x9;
+			#settings.tab-pane.fade Settings
