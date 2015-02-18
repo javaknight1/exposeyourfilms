@@ -16,11 +16,13 @@ var time            = require('time');
 var port            = 3000;
 var passport        = require('passport');
 var flash           = require('connect-flash');
+var mysql           =  require('mysql');                  
+var pool            =  mysql.createPool(require('./config/database').connection);
 
 
 //=============== configuration ===================
 
-require('./config/passport')(passport); // pass passport for configuration
+require('./config/passport')(passport, pool); // pass passport for configuration
 
 // set favicon
 app.use(favicon(__dirname + '/public/images/mini_logo.ico'));
@@ -51,7 +53,7 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 //=============== routes ===================
 // setup and configuration for all routes
 
-require('./app/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
+require('./app/routes.js')(app, passport, pool); // load our routes and pass in our app and fully configured passport
 
 //=============== error handlers ===================
 // catch and handle errors

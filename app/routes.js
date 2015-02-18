@@ -1,5 +1,5 @@
 // app/routes.js
-module.exports = function(app, passport) {
+module.exports = function(app, passport, pool) {
 
     // ======== HOME PAGE ========
     app.get('/', getSessionInfo, function(req, res) {
@@ -40,6 +40,16 @@ module.exports = function(app, passport) {
     app.get('/account', isLoggedIn, getSessionInfo, function(req, res) {
         res.render('account', {
             user : req.username, // get the user out of session and pass to template
+            status: req.status
+        });
+    });
+
+    // ======== FILM PAGE ==========
+    // Given an id, display the general info of the specific film
+    app.get('/film/:id', getSessionInfo, getFilmInfo, function(req, res){
+        res.render('film', {
+            user : req.username, // get the user out of session and pass to template
+            filmId : req.film.id,
             status: req.status
         });
     });
@@ -106,4 +116,31 @@ function getSessionInfo(req, res, next){
         req.status = 1;
     
     return next();
+}
+
+function getFilmInfo(req, res, next){
+
+    /*if(typeof req.query.id == "undefined")
+        res.redirect("/");
+
+    req.film.id = req.query.id;
+
+    pool.getConnection(function(err, connection){
+        connection.query(“select * from films where film_id=?”, [req.film.id], function(err, rows){
+            if(err) {
+                throw err;
+            }else if(rows.length > 0){
+                console.log( rows );
+            }else{
+                res.redirect("/");
+            }
+        });
+
+        connection.release();
+    });*/
+
+    req.film = {};
+    req.film.id = req.params.id;
+
+    next();
 }

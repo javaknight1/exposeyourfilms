@@ -1,0 +1,64 @@
+extends layout
+
+block content
+.well.well-lrg
+    .media
+      a.pull-left(href='#')
+        - if film > 0
+          img.media-object(src='/images/movie_covers/#{film}.jpg')
+          |   &#x9;&#x9;
+        - else
+          img.media-object(src='/images/movie_covers/0.jpg')
+          |   &#x9;&#x9;
+      .media-body
+        h4.media-heading Receta 1
+        |           
+        p.text-right By Francisco
+        |           
+        p
+          | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate.
+          | Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero. Aenean sit amet felis
+          | dolor, in sagittis nisi. Sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan.
+          | Aliquam in felis sit amet augue.
+        |           
+        ul.list-inline.list-unstyled
+          li
+            span
+              i.glyphicon.glyphicon-calendar
+              |  2 days, 8 hours
+          |             
+          li |
+          |             
+          span
+            i.glyphicon.glyphicon-comment
+            |  2 comments
+          |             
+          li |
+          |             
+          span
+            i.glyphicon.glyphicon-film
+            |  200 views
+          |             
+          li |
+          |             
+          li
+            span.glyphicon.glyphicon-star
+            |                         
+            span.glyphicon.glyphicon-star
+            |                         
+            span.glyphicon.glyphicon-star
+            |                         
+            span.glyphicon.glyphicon-star
+            |                         
+            span.glyphicon.glyphicon-star-empty
+          |             
+          li |
+          |             
+          li
+            a.film-edit(href="#")
+              span
+                i.glyphicon.glyphicon-pencil
+              | 
+            a.film-delete(href="#")              
+              span
+                i.glyphicon.glyphicon-trash
