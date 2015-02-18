@@ -29,7 +29,9 @@ block content
 				.tab-container
 					include ./account_tabs/home_tab.jade
 			| &#x9;
-			#purchased.tab-pane.fade Purchased Films
+			#purchased.tab-pane.fade
+				.tab-container
+					include ./account_tabs/film_tab.jade
 			| &#x9;
 			#rented.tab-pane.fade Rented Films
 			| &#x9;

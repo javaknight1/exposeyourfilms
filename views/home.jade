@@ -32,15 +32,15 @@ block content
   .my-thumbs-list.mThumbnailScroller(data-mts-axis="x" data-mts-type="hover-50")
     ul
       - for (var i = 0; i < 20; ++i) {
-          li
-            a(href='/film?id='+i)
+          li.film-link
+            a.film-link(href='/film?id='+i)
               img.brightness(src='/images/movie_covers/'+i+'.jpg') 
       - }
   h3 Popular
   .my-thumbs-list.mThumbnailScroller(data-mts-axis="x")
     ul
       - for (var i = 20; i < 40; ++i) {
-          li
+          li.film-link
             a(href='/film?id='+i)
               img.brightness(src='/images/movie_covers/'+i+'.jpg') 
       - }
@@ -48,7 +48,7 @@ block content
   .my-thumbs-list.mThumbnailScroller(data-mts-axis="x")
     ul
       - for (var i = 40; i < 60; ++i) {
-          li
+          li.film-link
             a(href='/film?id='+i)
               img.brightness(src='/images/movie_covers/'+i+'.jpg') 
       - }
