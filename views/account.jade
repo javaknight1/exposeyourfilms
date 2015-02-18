@@ -6,6 +6,11 @@ block content
 			li.active
 				a(href='#home' data-toggle='tab') Home
 				| &#x9;
+			- if(status == 0) {
+				li
+					a(href='#uploaded' data-toggle='tab') Uploaded
+					| &#x9;
+			- }
 			li
 				a(href='#purchased' data-toggle='tab') Purchased
 				| &#x9;
@@ -29,6 +34,11 @@ block content
 				.tab-container
 					include ./account_tabs/home_tab.jade
 			| &#x9;
+			- if(status == 0) {
+				#uploaded.tab-pane.fade
+					.tab-container
+						include ./account_tabs/upload_tab.jade
+			- }
 			#purchased.tab-pane.fade
 				.tab-container
 					include ./account_tabs/film_tab.jade

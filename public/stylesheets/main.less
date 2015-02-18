@@ -1,5 +1,6 @@
 @foot: 40px;
 @head: 65px;
+@icon-fade: 0.125s;
 
 html, body {
 	margin:0;
@@ -108,4 +109,45 @@ html, body {
 	border-radius: 3px;
 	float: left;	
 	margin: 10px
+}
+
+.film-change {
+    margin-right: 5px;
+
+    &:hover {
+    	text-decoration: none;
+    }
+}
+
+.film-change-icons{
+	color: #666666;
+    -webkit-transition: color @icon-fade linear;
+    -moz-transition: color @icon-fade linear;
+    -ms-transition: color @icon-fade linear;
+    -o-transition: color @icon-fade linear;
+    transition: color @icon-fade linear;
+}
+
+.film-edit {
+
+	.film-change;
+
+	span{
+		.film-change-icons;
+		&:hover{
+			color: blue;
+		}
+	}
+}
+
+.film-delete {
+	
+	.film-change;
+
+	span {
+		.film-change-icons;
+		&:hover{
+			color: red;
+		}
+	}
 }
