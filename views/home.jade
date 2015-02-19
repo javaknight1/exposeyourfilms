@@ -33,7 +33,7 @@ block content
     ul
       - for (var i = 0; i < 20; ++i) {
           li.film-link
-            a.film-link(href='/film?id='+i)
+            a(href='/film?id='+i)
               img.brightness(src='/images/movie_covers/'+i+'.jpg') 
       - }
   h3 Popular

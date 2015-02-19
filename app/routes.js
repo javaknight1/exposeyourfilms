@@ -46,10 +46,18 @@ module.exports = function(app, passport, pool) {
 
     // ======== FILM PAGE ==========
     // Given an id, display the general info of the specific film
-    app.get('/film/:id', getSessionInfo, getFilmInfo, function(req, res){
+    app.get('/film/:id', getFilmInfo, getSessionInfo, function(req, res){
         res.render('film', {
             user : req.username, // get the user out of session and pass to template
             filmId : req.film.id,
+            //status: req.status
+        });
+    });
+
+    app.get('upload', isLoggedIn, getSessionInfo, isFilmmaker, function(req, res){
+        res.render('upload', {
+            user : req.username, // get the user out of session and pass to template
+            //filmId : req.film.id,
             status: req.status
         });
     });
@@ -81,6 +89,15 @@ function isNotLoggedIn(req, res, next) {
 
     // if they aren't redirect them to the home page
     res.redirect('/account');
+}
+
+function isFilmmaker(req, res, next){
+
+    //check if they are a filmmaker
+    if(status != 1)
+        res.redirect('/account');
+
+    next();
 }
 
 function getSessionInfo(req, res, next){
@@ -120,26 +137,34 @@ function getSessionInfo(req, res, next){
 
 function getFilmInfo(req, res, next){
 
-    /*if(typeof req.query.id == "undefined")
-        res.redirect("/");
+    // if(typeof req.query.id == "undefined")
+    //     res.redirect("/");
 
-    req.film.id = req.query.id;
+    // req.film.id = req.query.id;
 
-    pool.getConnection(function(err, connection){
-        connection.query(“select * from films where film_id=?”, [req.film.id], function(err, rows){
-            if(err) {
-                throw err;
-            }else if(rows.length > 0){
-                console.log( rows );
-            }else{
-                res.redirect("/");
-            }
-        });
+    // pool.getConnection(function(err, connection){
 
-        connection.release();
-    });*/
+    //     //check if the film exists
+    //     connection.query("select * from films where film_id=?", [req.film.id], function(err, rows){
+    //         if(err) {
+    //             throw err;
+    //         }else if(rows.length > 0){
+    //             console.log(rows);
+    //         }else{
+    //             res.redirect("/");
+    //         }
+    //     });
+
+    //     connection.release();
+    // });
 
     req.film = {};
+
+    //Not a valid film id was given
+    if(req.params.id > 60 || req.params.id < 0){
+        res.redirect("/");
+    }
+
     req.film.id = req.params.id;
 
     next();
