@@ -1,5 +1,7 @@
 .container
-    a.btn.btn-default.btn-lg.btn-block(href="upload") + Upload New Film
+    a.btn.btn-default.btn-lg.btn-block(href="upload")
+      span.glyphicon.glyphicon-plus(aria-hidden="true") 
+      |   Upload New Film
     .upload-film-container
       - for(var i = 1; i < 4; i++)
         .well

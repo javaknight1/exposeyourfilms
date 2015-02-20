@@ -1,0 +1,43 @@
+extend layout
+
+block content
+  .container.page-container
+    h3 Upload Film
+    | 
+    #drop-zone-film.upload-drop-zone
+      .well.drop-zone-container
+        .drop-zone-content
+          | Drag and drop files here
+          br
+          br
+          | or choose a file 
+          a.btn.btn-primary(href="/") Choose File
+    h4 Film Upload
+    .progress.progress-striped.active
+      .progress-bar(style="width:25%")
+    h3 Upload Trailer
+    | 
+    #drop-zone-trailer.upload-drop-zone
+      .well.drop-zone-container
+        .drop-zone-content
+          | Drag and drop files here
+          br
+          br
+          | or choose a file 
+          a.btn.btn-primary(href="/") Choose File
+    h4 Trailer Upload
+    .progress.progress-striped.active
+      .progress-bar.progress-bar-success(style="width:50%")
+    h3 Upload Cover Art
+    | 
+    #drop-zone-cover.upload-drop-zone
+      .well.drop-zone-container
+        .drop-zone-content
+          | Drag and drop files here
+          br
+          br
+          | or choose a file 
+          a.btn.btn-primary(href="/") Choose File
+    h4 Cover Art Upload
+    .progress.progress-striped.active
+      .progress-bar.progress-bar-warning(style="width:75%")

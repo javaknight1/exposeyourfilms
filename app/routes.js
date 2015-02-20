@@ -54,10 +54,11 @@ module.exports = function(app, passport, pool) {
         });
     });
 
-    app.get('upload', isLoggedIn, getSessionInfo, isFilmmaker, function(req, res){
+    // ========= UPLOAD FILM PAGE =========
+    // This is the form in which will allow the filmmaker to upload a new film
+    app.get('/upload', isLoggedIn, getSessionInfo, isFilmmaker, function(req, res){
         res.render('upload', {
             user : req.username, // get the user out of session and pass to template
-            //filmId : req.film.id,
             status: req.status
         });
     });
@@ -94,7 +95,7 @@ function isNotLoggedIn(req, res, next) {
 function isFilmmaker(req, res, next){
 
     //check if they are a filmmaker
-    if(status != 1)
+    if(req.status != 0)
         res.redirect('/account');
 
     next();
