@@ -63,6 +63,11 @@ module.exports = function(app, passport, pool) {
         });
     });
 
+    // ========= POST UPLOAD FILM FILE =========
+    // Process to upload film file
+    app.post('/upload/film', function(req, res){
+        //console.log("Sub: " + req.body.sub);
+    });
     // ======== LOGOUT PAGE ========
     app.get('/logout', getSessionInfo, function(req, res) {
         req.logout();

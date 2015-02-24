@@ -16,9 +16,10 @@ var time            = require('time');
 var port            = 3000;
 var passport        = require('passport');
 var flash           = require('connect-flash');
-var mysql           =  require('mysql');                  
-var pool            =  mysql.createPool(require('./config/database').connection);
-
+var mysql           = require('mysql');                  
+var pool            = mysql.createPool(require('./config/database').connection);
+var multer          = require('multer');
+var fs              = require('fs-extra');
 
 //=============== configuration ===================
 
@@ -43,6 +44,38 @@ app.use(less(__dirname + '/public'));
 
 //public file configuration
 app.use(express.static(path.join(__dirname, 'public')));
+
+//configure upload settings
+app.use(multer({ dest: './uploads/',
+    rename: function (fieldname, filename) {
+        return filename+Date.now();
+    },
+    onParseEnd: function (req, next) {
+      console.log('Form parsing completed at: ', new Date());
+
+      // usage example: custom body parse
+      req.body = require('qs').parse(req.body);
+
+      //console.log("Sub: " + JSON.stringify(req.body));
+
+      // call the next middleware
+      next();
+    },
+    onFileUploadStart: function (file) {
+      console.log(file.originalname + ' is starting ...');
+    },
+    onFileUploadData: function (file, data, req, res) {
+        console.log(data.length + ' of ' + file.fieldname + ' arrived');
+    },
+    onFileUploadComplete: function (file, req, res) {
+      console.log(file.fieldname + ' uploaded to  ' + file.path);
+      res.end('{"success" : "Updated Successfully", "status" : 200}');
+    },
+    onError: function(err, next){
+        console.log("Error: " + err);
+        next(err);
+    }
+}));
 
 // required for passport
 app.use(session({ secret: '7<FB2RO@d8<843q:P6$4Bp08j0E8It', saveUninitialized: true, resave: true} ));

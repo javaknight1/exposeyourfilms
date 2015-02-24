@@ -2,42 +2,54 @@ extend layout
 
 block content
   .container.page-container
-    h3 Upload Film
-    | 
-    #drop-zone-film.upload-drop-zone
-      .well.drop-zone-container
-        .drop-zone-content
-          | Drag and drop files here
-          br
-          br
-          | or choose a file 
-          a.btn.btn-primary(href="/") Choose File
-    h4 Film Upload
-    .progress.progress-striped.active
-      .progress-bar(style="width:25%")
-    h3 Upload Trailer
-    | 
-    #drop-zone-trailer.upload-drop-zone
-      .well.drop-zone-container
-        .drop-zone-content
-          | Drag and drop files here
-          br
-          br
-          | or choose a file 
-          a.btn.btn-primary(href="/") Choose File
-    h4 Trailer Upload
-    .progress.progress-striped.active
-      .progress-bar.progress-bar-success(style="width:50%")
-    h3 Upload Cover Art
-    | 
-    #drop-zone-cover.upload-drop-zone
-      .well.drop-zone-container
-        .drop-zone-content
-          | Drag and drop files here
-          br
-          br
-          | or choose a file 
-          a.btn.btn-primary(href="/") Choose File
-    h4 Cover Art Upload
-    .progress.progress-striped.active
-      .progress-bar.progress-bar-warning(style="width:75%")
+    #film-upload-container.upload-container
+      h3 Upload Film
+      | 
+      #drop-zone-film.upload-drop-zone
+        form#film-form(method="post" action="/upload/film" enctype="multipart/form-data").well.drop-zone-container
+          .drop-zone-content
+            | Drag and drop files here
+            br
+            br
+            | or choose a file 
+            a#film-select.btn.btn-primary.btn-sm Select Film file
+            input#film-upload-file(type="file" style="display:none" name="film_file")
+            input#film-upload-submit(type="submit" style="display:none")
+    #film-timeline.timeline
+      h4 Film Upload
+        .progress.progress-striped.active
+          #film-upload-progress.progress-bar
+    #trailer-upload-container.upload-container
+      h3 Upload Trailer
+      | 
+      #drop-zone-trailer.upload-drop-zone
+        form#trailer-form(method="post" action="/upload/trailer" enctype="multipart/form-data").well.drop-zone-container
+          .drop-zone-content
+            | Drag and drop files here
+            br
+            br
+            | or choose a file 
+            a#trailer-select.btn.btn-primary.btn-sm Select Trailer file
+            input#trailer-upload-file(type="file" style="display:none" name="trailer_file")
+            input#trailer-upload-submit(type="submit" style="display:none")
+    #trailer-timeline.timeline
+      h4 Trailer Upload
+      .progress.progress-striped.active
+        #trailer-upload-progress.progress-bar.progress-bar-success
+    #cover-upload-container.upload-container
+      h3 Upload Cover Art
+      |   
+      #drop-zone-cover.upload-drop-zone
+        form#cover-form(method="post" action="/upload/cover" enctype="multipart/form-data").well.drop-zone-container
+          .drop-zone-content
+            | Drag and drop files here
+            br
+            br
+            | or choose a file 
+            a#cover-select.btn.btn-primary.btn-sm Select Cover Art file
+            input#cover-upload-file(type="file" style="display:none" name="cover_file")
+            input#cover-upload-submit(type="submit" style="display:none")
+    #cover-timeline.timeline
+      h4 Cover Art Upload
+      .progress.progress-striped.active
+        #cover-upload-progress.progress-bar.progress-bar-warning
