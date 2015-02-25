@@ -17,13 +17,12 @@ var port            = 3000;
 var passport        = require('passport');
 var flash           = require('connect-flash');
 var mysql           = require('mysql');                  
-var pool            = mysql.createPool(require('./config/database').connection);
 var multer          = require('multer');
 var fs              = require('fs-extra');
 
 //=============== configuration ===================
 
-require('./config/passport')(passport, pool); // pass passport for configuration
+require('./config/passport')(passport); // pass passport for configuration
 
 // set favicon
 app.use(favicon(__dirname + '/public/images/mini_logo.ico'));
@@ -65,7 +64,7 @@ app.use(multer({ dest: './uploads/',
       console.log(file.originalname + ' is starting ...');
     },
     onFileUploadData: function (file, data, req, res) {
-        console.log(data.length + ' of ' + file.fieldname + ' arrived');
+        //console.log(data.length + ' of ' + file.fieldname + ' arrived');
     },
     onFileUploadComplete: function (file, req, res) {
       console.log(file.fieldname + ' uploaded to  ' + file.path);
@@ -85,8 +84,8 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 
 //=============== routes ===================
 // setup and configuration for all routes
-
-require('./app/routes.js')(app, passport, pool); // load our routes and pass in our app and fully configured passport
+//var router = require('./app/routesmanager.js')(app, passport, pool); // load our routes and pass in our app and fully configured passport
+var routes = require('./app/routes.js')(app, passport);
 
 //=============== error handlers ===================
 // catch and handle errors

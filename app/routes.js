@@ -1,10 +1,18 @@
 // app/routes.js
-module.exports = function(app, passport, pool) {
+var util        = require("util"); 
+var fs          = require("fs-extra"); 
+var mysql       = require('mysql');
+var dbconfig    = require('../config/database');
+var connection  = mysql.createConnection(dbconfig.connection);
 
-    // ======== HOME PAGE ========
+connection.query('USE ' + dbconfig.database);
+
+module.exports = function(app, passport) {
+
+    // // ======== HOME PAGE ========
     app.get('/', getSessionInfo, function(req, res) {
         res.render('home', {
-            user: req.username
+            user: req.session.username
         });
     });
 
@@ -31,16 +39,16 @@ module.exports = function(app, passport, pool) {
 
     // process the signup form
     app.post('/signup', passport.authenticate('local-signup', {
-            successRedirect : '/', // redirect to the secure profile section
-            failureRedirect : '/signup', // redirect back to the login page if there is an error
-            failureFlash : true // allow flash messages
-        }));
+        successRedirect : '/', // redirect to the secure profile section
+        failureRedirect : '/signup', // redirect back to the login page if there is an error
+        failureFlash : true // allow flash messages
+    }));
 
     // ======== ACCOUNT PAGE ========
     app.get('/account', isLoggedIn, getSessionInfo, function(req, res) {
         res.render('account', {
-            user : req.username, // get the user out of session and pass to template
-            status: req.status
+            user : req.session.username, // get the user out of session and pass to template
+            status: req.session.status
         });
     });
 
@@ -48,7 +56,7 @@ module.exports = function(app, passport, pool) {
     // Given an id, display the general info of the specific film
     app.get('/film/:id', getFilmInfo, getSessionInfo, function(req, res){
         res.render('film', {
-            user : req.username, // get the user out of session and pass to template
+            user : req.session.username, // get the user out of session and pass to template
             filmId : req.film.id,
             //status: req.status
         });
@@ -56,18 +64,57 @@ module.exports = function(app, passport, pool) {
 
     // ========= UPLOAD FILM PAGE =========
     // This is the form in which will allow the filmmaker to upload a new film
-    app.get('/upload', isLoggedIn, getSessionInfo, isFilmmaker, function(req, res){
+    app.get('/upload', isLoggedIn, getSessionInfo, isFilmmaker, getDraftSession, function(req, res){
         res.render('upload', {
-            user : req.username, // get the user out of session and pass to template
-            status: req.status
+            user : req.session.username, // get the user out of session and pass to template
+            status: req.session.status
         });
     });
 
     // ========= POST UPLOAD FILM FILE =========
     // Process to upload film file
     app.post('/upload/film', function(req, res){
-        //console.log("Sub: " + req.body.sub);
+        if (req.files) { 
+            console.log(util.inspect(req.session));
+            if (req.files.film_file.size === 0) {
+                console.log("Film file empty");
+            }
+            fs.exists(req.files.film_file.path, function(exists) { 
+                if(exists) { 
+                    console.log("Film Exists!!");
+                    if(!isDraftSet()){
+                        createEmptyDraftFilm();
+                    }
+                    req.session.draft.film = req.files.film_file;
+                }
+            }); 
+        } 
     });
+
+    // ========= POST UPLOAD TRAILER FILE =========
+    // Process to upload trailer file
+    app.post('/upload/trailer', function(req, res){
+
+    });
+
+    // ========= POST UPLOAD COVER ART FILE =========
+    // Process to upload cover art file
+    app.post('/upload/cover', function(req, res){
+
+    });
+
+    // ========= POST UPLOAD FILM FILE =========
+    // Process to upload film file
+    app.post('/upload/info', function(req, res){
+
+    });
+
+    // ========= POST UPLOAD =========
+    // After everything has been uploaded, finally process the film into db
+    app.post('/upload/save', function(req, res){
+
+    });
+
     // ======== LOGOUT PAGE ========
     app.get('/logout', getSessionInfo, function(req, res) {
         req.logout();
@@ -100,7 +147,7 @@ function isNotLoggedIn(req, res, next) {
 function isFilmmaker(req, res, next){
 
     //check if they are a filmmaker
-    if(req.status != 0)
+    if(req.session.status != 0)
         res.redirect('/account');
 
     next();
@@ -109,60 +156,41 @@ function isFilmmaker(req, res, next){
 function getSessionInfo(req, res, next){
 
     if(typeof req.user != "undefined" && typeof req.user.id != "undefined")
-        req.id = req.user.id;
+        req.session.id = req.user.id;
     else
-        req.id = "";
+        req.session.id = "";
 
     if(typeof req.user != "undefined" && typeof req.user.username != "undefined")
-        req.username = req.user.username;
+        req.session.username = req.user.username;
     else
-        req.username = "";
+        req.session.username = "";
 
     if(typeof req.user != "undefined" && typeof req.user.email != "undefined")
-        req.email = req.user.email;
+        req.session.email = req.user.email;
     else
-        req.email = "";
+        req.session.email = "";
 
-    if(typeof req.user != "undefined" && typeof req.user.firstname != "undefined")
-        req.firstname = req.user.firstname;
+    if(typeof req.user != "undefined" && typeof req.user.first_name != "undefined")
+        req.session.firstname = req.user.first_name;
     else
-        req.firstname = "";
+        req.session.firstname = "";
 
-    if(typeof req.user != "undefined" && typeof req.user.lastname != "undefined")
-        req.lastname = req.user.lastname;
+    if(typeof req.user != "undefined" && typeof req.user.last_name != "undefined")
+        req.session.lastname = req.user.last_name;
     else
-        req.lastname = "";
+        req.session.lastname = "";
 
     if(typeof req.user != "undefined" && typeof req.user.status != "undefined")
-        req.status = req.user.status;
+        req.session.status = req.user.status;
     else
-        req.status = 1;
+        req.session.status = 1;
+
+    req.session.draft = {};
     
-    return next();
+    next();
 }
 
 function getFilmInfo(req, res, next){
-
-    // if(typeof req.query.id == "undefined")
-    //     res.redirect("/");
-
-    // req.film.id = req.query.id;
-
-    // pool.getConnection(function(err, connection){
-
-    //     //check if the film exists
-    //     connection.query("select * from films where film_id=?", [req.film.id], function(err, rows){
-    //         if(err) {
-    //             throw err;
-    //         }else if(rows.length > 0){
-    //             console.log(rows);
-    //         }else{
-    //             res.redirect("/");
-    //         }
-    //     });
-
-    //     connection.release();
-    // });
 
     req.film = {};
 
@@ -174,4 +202,53 @@ function getFilmInfo(req, res, next){
     req.film.id = req.params.id;
 
     next();
+}
+
+function isDraftSet(){
+
+    if(typeof req.session != "undefined" && typeof req.session.draft != "undefined" && typeof req.session.draft.id != "undefined"){
+        return false;
+    }else{
+        return true;
+    }
+}
+
+function getDraftSession(req, res, next){
+
+    //check if there is a draft currently
+    if(!isDraftSet()){
+
+        //check if film uploaded
+        //check if trailer uploaded
+        //check if cover uploaded
+        //check for all entries of information have been entered
+
+        connection.query("SELECT * FROM films WHERE filmId = ? AND draft = 1 AND filmmakerId = ?",[req.session.draft.id, req.session.id], function(err, rows){
+            if(rows){
+                req.session.draft.id = rows[0].filmId;
+            }
+        });
+
+    }
+
+    next();
+}
+
+function createEmptyDraftFilm(){
+
+    connection.query("INSERT INTO films() VALUES()",[], function(err, rows){
+        if(rows){
+            req.session.draft.id = rows.insertId;
+        }
+    });
+}
+
+function createRandomName(){
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    for( var i=0; i < 5; i++ )
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return text;
 }
