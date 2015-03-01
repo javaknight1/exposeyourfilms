@@ -1,0 +1,10 @@
+.film-container
+	- for (var i = 0; i < 1; i++) {
+		.film-container-row
+			- for(var j = 0; j < 30; j++) {
+				- var id = j;
+				.film-link
+					a(href='/film?id='+id)
+						img.brightness(src='/images/movie_covers/'+id+'.jpg')
+			- }
+	- }

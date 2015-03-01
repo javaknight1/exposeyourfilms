@@ -1,5 +1,6 @@
 @foot: 40px;
 @head: 65px;
+@icon-fade: 0.125s;
 
 html, body {
 	margin:0;
@@ -54,9 +55,6 @@ html, body {
   //box-shadow: 0px 10px 71px -6px rgba(77,77,77,1);
 
   li {
-  	margin-left: 10px;
-  	margin-right: 10px;
-  	border: 5px ridge orange;
 
   	.first{
   		margin-left: 0px;
@@ -75,10 +73,6 @@ html, body {
 	}
 }
 
-.dashboard-container {
-	padding-top: 15px;
-}
-
 .dashboard-content {
 	padding-top: 25px;
 }
@@ -89,4 +83,111 @@ html, body {
 	margin-left: auto;
 	padding-left: 15px;
 	padding-right: 15px;
+}
+
+.upload-film-container {
+	padding-top: 10px;
+}
+
+.film-container {
+	margin-right: auto;
+	margin-left: auto;
+	margin-top: 25px;
+	margin-bottom: 20px;
+	width: 100%;
+	display: inline-block;
+	text-align: center;
+}
+
+.film-container-row {
+	margin-bottom: 5px;
+	display: inline-block;
+}
+
+.film-link {
+	border: 5px ridge orange;
+	border-radius: 3px;
+	float: left;	
+	margin: 10px
+}
+
+.film-change {
+    margin-right: 5px;
+
+    &:hover {
+    	text-decoration: none;
+    }
+}
+
+.film-change-icons{
+	color: #666666;
+    -webkit-transition: color @icon-fade linear;
+    -moz-transition: color @icon-fade linear;
+    -ms-transition: color @icon-fade linear;
+    -o-transition: color @icon-fade linear;
+    transition: color @icon-fade linear;
+}
+
+.film-edit {
+
+	.film-change;
+
+	span{
+		.film-change-icons;
+		&:hover{
+			color: blue;
+		}
+	}
+}
+
+.film-delete {
+	
+	.film-change;
+
+	span {
+		.film-change-icons;
+		&:hover{
+			color: red;
+		}
+	}
+}
+
+.page-container {
+	padding-top: 25px;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.upload-drop-zone {
+  height: 200px;
+  width: 100%;
+  display: table;
+  vertical-align: middle;
+  color: #ccc;
+  border-width: 2px;
+  border-style: dashed;
+  border-color: #ccc;
+  margin-bottom: 20px;
+  text-align: center
+}
+
+.upload-drop-zone.drop {
+  color: #222;
+  border-color: #222;
+}
+
+.drop-zone-container {
+	height: 100%;
+	display: table-cell;
+	text-align: center;
+	vertical-align: middle;
+	margin: 0 auto;
+}
+
+.timeline, .upload-container {
+	display: none;
+}
+
+.progress-bar {
+	width: 0%;
 }

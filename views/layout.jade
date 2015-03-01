@@ -96,3 +96,149 @@ html(lang= "en")
     //scripts used for signing in
     script(src='/javascripts/forms.js')
     script(src='/javascripts/sha512.js')
+    script(src='http://malsup.github.com/jquery.form.js')
+    script(src='/javascripts/dropzone.js')
+    script(type='text/javascript').
+      $(document).ready(function() {
+        'use strict';
+
+        // Dropzone graphical tools
+        // ======================
+        var dropZone = $('#drop-zone-film');
+        var startUpload = function(files) {
+          console.log(files);
+        }
+        dropZone.ondrop = function(e) {
+          e.preventDefault();
+          this.className = 'upload-drop-zone';
+          startUpload(e.dataTransfer.files);
+        }
+        dropZone.ondragover = function() {
+          this.className = 'upload-drop-zone drop';
+          return false;
+        }
+        dropZone.ondragleave = function() {
+          this.className = 'upload-drop-zone';
+          return false;
+        }
+
+        $('#film-upload-container').show();
+
+        // Upload functionality tools
+        // =====================
+        $('#film-select').click(function(){
+          console.log("Clicked button!!");
+          $('#film-upload-file').click();
+        });
+
+        $('#film-upload-file').change(function(){
+          if($('#film-upload-file')[0].value.length == 0){
+              console.log("You clicked cancel!!");
+            }else{
+              console.log("You didn't clicked cancel!!");
+              $('#film-form').ajaxSubmit({
+                  data: { 'sub' : 'film'},
+                  beforeSubmit: function(data, form, options){
+                      console.log("...Starting to send form...");
+                      $('#film-upload-container').slideUp("slow", function(){
+                        $('#film-timeline').slideDown();
+                        $('#trailer-upload-container').slideDown();
+                      });
+                  },
+                  uploadProgress: function(e, position, total, percent){
+                      console.log("Upload Process");
+                      console.log("==============");
+                      console.log("Position: " + position);
+                      console.log("Total: " + total);
+                      console.log("??: " + (position/total));
+                      console.log("Percent: " + percent);
+                      var realpercent = (position/total) * 100;
+                      $('#film-upload-progress').css("width", realpercent + "%");
+                  },
+                  error: function(xhr) {
+                    console.log('Error(Status): ' + xhr.status);
+                  },
+                  success: function(response) {
+                    console.log("Success!!");
+                  }
+              });
+            }
+        });
+
+        $('#trailer-select').click(function(){
+          console.log("Clicked button!!");
+          $('#trailer-upload-file').click();
+        });
+
+        $('#trailer-upload-file').change(function(){
+          if($('#trailer-upload-file')[0].value.length == 0){
+              console.log("You clicked cancel!!");
+            }else{
+              console.log("You didn't clicked cancel!!");
+              $('#trailer-form').ajaxSubmit({
+                  data: { 'sub' : 'trailer'},
+                  beforeSubmit: function(data, form, options){
+                      console.log("...Starting to send form...");
+                      $('#trailer-upload-container').slideUp("slow", function(){
+                        $('#trailer-timeline').slideDown();
+                        $('#cover-upload-container').slideDown();
+                      });
+                  },
+                  uploadProgress: function(e, position, total, percent){
+                      console.log("Upload Process");
+                      console.log("==============");
+                      console.log("Position: " + position);
+                      console.log("Total: " + total);
+                      console.log("Percent: " + percent);
+                      var realpercent = (position/total) * 100;
+                      $('#trailer-upload-progress').css("width", realpercent + "%");
+                  },
+                  error: function(xhr) {
+                    console.log('Error(Status): ' + xhr.status);
+                  },
+                  success: function(response) {
+                    console.log("Success!!");
+                  }
+              });
+            }
+        });
+
+        $('#cover-select').click(function(){
+          console.log("Clicked button!!");
+          $('#cover-upload-file').click();
+        });
+
+        $('#cover-upload-file').change(function(){
+          if($('#cover-upload-file')[0].value.length == 0){
+              console.log("You clicked cancel!!");
+            }else{
+              console.log("You didn't clicked cancel!!");
+              $('#cover-form').ajaxSubmit({
+                  data: { 'sub' : 'cover'},
+                  beforeSubmit: function(data, form, options){
+                      console.log("...Starting to send form...");
+                      $('#cover-upload-container').slideUp("slow", function(){
+                        $('#cover-timeline').slideDown();
+                        //$('#trailer-upload-container').slideDown();
+                        //TODO: show data form to film
+                      });
+                  },
+                  uploadProgress: function(e, position, total, percent){
+                      console.log("Upload Process");
+                      console.log("==============");
+                      console.log("Position: " + position);
+                      console.log("Total: " + total);
+                      console.log("Percent: " + percent);
+                      var realpercent = (position/total) * 100;
+                      $('#cover-upload-progress').css("width", realpercent + "%");
+                  },
+                  error: function(xhr) {
+                    console.log('Error(Status): ' + xhr.status);
+                  },
+                  success: function(response) {
+                    console.log("Success!!");
+                  }
+              });
+            }
+        });
+      });
