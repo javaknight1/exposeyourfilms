@@ -28,8 +28,17 @@ module.exports = function(passport) {
 
     // used to deserialize the user
     passport.deserializeUser(function(id, done) {
-        connection.query("SELECT * FROM members WHERE id = ? ",[id], function(err, rows){
-            done(err, rows[0]);
+        connection.query("SELECT id, email, username, first_name, last_name, status FROM members WHERE id = ? ",[id], function(err, rows){
+            var u = {
+                id: rows[0].id,
+                email: rows[0].email,
+                username: rows[0].username,
+                firstname: rows[0].first_name,
+                lastname: rows[0].last_name,
+                membership: rows[0].status
+            };
+
+            done(err, u);
         });
     });
 

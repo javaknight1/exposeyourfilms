@@ -45,7 +45,7 @@ app.use(less(__dirname + '/public'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 //configure upload settings
-app.use(multer({ dest: './uploads/',
+app.use(multer({ dest: './uploads/tmp',
     rename: function (fieldname, filename) {
         return filename+Date.now();
     },
