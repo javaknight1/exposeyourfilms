@@ -4,6 +4,7 @@ var fs          = require("fs-extra");
 var mysql       = require('mysql');
 var dbconfig    = require('../config/database');
 var connection  = mysql.createConnection(dbconfig.connection);
+var ffmpeg      = require('fluent-ffmpeg');
 
 connection.query('USE ' + dbconfig.database);
 
@@ -77,7 +78,9 @@ module.exports = function(app, passport) {
     app.post('/upload/film', function(req, res){
         fs.exists(req.files.film_file.path, function(exists) {
 
-
+            //convert to all three formats (ogv, mp4, and webm)
+            //move new files into uploads/film folder
+            //add info to film_file
 
             req.files.film_file.kind = 0;
             updateDraft(req.user.id, req.files.film_file, null);
@@ -211,7 +214,7 @@ function updateDraft(filmmakerId, upload, info){
             connection.query("INSERT INTO films(filmmakerId) VALUE(?)", [filmmakerId], function(err, rows){
                 if(upload != null){
 
-                    //create three random names
+
 
                 }
 
@@ -230,6 +233,24 @@ function updateFilmInfo(id, info){
 
 }
 
-function updateUploadInfo(filmmakerId, upload){
+function updateUploadInfo(filmId, upload){
 
+    //create three random names
+    var ogv_name = createRandomName();
+    var mp4_name = createRandomName();
+    var webm_name = createRandomName();
+
+    //Craete mp4 file
+    ffmpeg(req.files.film_file.path).output('uploads/tmp/file_convert.mp4').audioCodec('libfaac').audioBitrate('96k').videoCodec('libx264').toFormat('mp4').size('640x360');
+    //convert to ogv file
+    ffmpeg(req.files.film_file.path).output('uploads/tmp/file_convert.ogv').audioCodec('libvorbis').audioBitrate('96k').videoCodec('libtheora').toFormat('ogg').size('640x360');
+    //convert to webm file
+    ffmpeg(req.files.film_file.path).output('uploads/tmp/file_convert.webm').audioCodec('libvorbis').audioBitrate('96k').videoCodec('libvpx').toFormat('webm').size('640x360');
+
+    //insert mp4 file info into upload
+    connection.query("INSERT INTO uploads(filmId, name, type, mime) VALUES(?, ?, ?, mp4)", [filmId, , ], function(err, rows){});
+    //insert ogv file info into upload
+    connection.query("INSERT INTO uploads(filmId, name, type, mime) VALUES(?, ?, ?, ogv)", [filmId, , ], function(err, rows){});
+    //insert webm file info into upload
+    connection.query("INSERT INTO uploads(filmId, name, type, mime) VALUES(?, ?, ?, webm)", [filmId, , ], function(err, rows){});
 }
