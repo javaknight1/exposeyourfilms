@@ -251,82 +251,131 @@ function updateDraft(filmmakerId, upload, info){
 function updateFilmInfo(id, info){
 
 
+
 }
 
-function updateUploadInfo(id, upload){
+function updateUploadPicInfo(id, upload){
+
+    var name = createRandomName();
+
+    connection.query("INSERT INTO uploads(filmId, name, type, mime) VALUES(?, ?, 2, ?)", [id, name, upload.type], function(err, rows) {
+        if(err)
+            throw "Could not store picture information.";
+
+        console.log("Stored picture in uploads table.");
+    });
+}
+
+function updateUploadVideoInfo(id, upload){
 
     //create three random names
     var mp4_name = createRandomName();
     var ogv_name = createRandomName();
     var webm_name = createRandomName();
 
-    //convert to mp4 file
-    console.log("Creating mp4 file");
-    var proc_mp4 = new ffmpeg({ source: upload.path, timeout: 10000})
-        .withVideoCodec('libx264')
-        .withVideoBitrate('1500k')
-        .withAudioCodec('libfaac')
-        .withAudioBitrate('96k')
-        .withSize("640x360")
-        .toFormat('mp4')
-        .onProgress(function(progress) {
-            //console.log("MP4 format progress ..." + util.inspect(progress));
-        })
-        .saveToFile("uploads/"+mp4_name+".mp4", function(stdout, stderr) {
-            console.log('File [' + mp4_name + ']converted to mp4 format!!');
-            //insert into uploads table once converted
-            connection.query("INSERT INTO uploads(filmId, name, type, mime) VALUES(?, ?, ?, 'mp4')", [id, mp4_name, upload.kind], function(err, rows){
-                if(err) {
-                    throw "Err: " + err + ": Could not record mp4 file[" + mp4_name + "]";
-                }
+    //======== Store mp4 file ===========
+    //insert into uploads with status 1 [uploading]
+    console.log("MP4 attempting to store with status 'uploading'");
+    connection.query("INSERT INTO uploads(filmId, name, type, mime, status) VALUES(?, ?, ?, 'mp4', 1)", [id, mp4_name, upload.kind], function(err, rows){
 
-                console.log("Recorded mp4 file [" + mp4_name + "]");
-                //convert to ogv file
-                console.log("Creating ogg file");
-                var proc_ogg = new ffmpeg({ source: upload.path, timeout: 10000 })
-                    .withVideoCodec('libtheora')
-                    .withVideoBitrate('1500k')
-                    .withAudioCodec('libvorbis')
-                    .withAudioBitrate('96k')
-                    .withSize("640x360")
-                    .toFormat('ogg')
-                    .onProgress(function(progress) {
-                        //console.log("OGG format progress ..." + progress);
-                    })
-                    .saveToFile("uploads/"+ogv_name+".ogv", function(stdout, stderr) {
-                        console.log('File converted to ogg format!!');
-                        //insert into uploads table once converted
-                        connection.query("INSERT INTO uploads(filmId, name, type, mime) VALUES(?, ?, ?, 'ogv')", [id, ogv_name, upload.kind], function(err, rows){
-                            if(err) {
-                                throw "Err: " + err + ": Could not record ogv file[" + ogv_name + "]";
-                            }
+        if(err)
+            throw "Could not store MP4 upload with 'uploading' status.";
 
-                            console.log("Recorded ogv file [" + ogv_name + "]");
-                            //convert to webm format
-                            console.log("Creating webm file");
-                            var proc_webm = new ffmpeg({ source: upload.path, timeout: 10000 })
-                                .withVideoCodec('libvpx')
-                                .withVideoBitrate('1500k')
-                                .withAudioCodec('libvorbis')
-                                .withAudioBitrate('96k')
-                                .withSize("640x360")
-                                .toFormat('webm')
-                                .onProgress(function(progress) {
-                                    //console.log("WEBM format progress ..." + progress);
-                                })
-                                .saveToFile("uploads/"+webm_name+".webm", function(stdout, stderr) {
-                                    console.log('File converted to webm format!!');
-                                    //insert into uploads table once converted
-                                    connection.query("INSERT INTO uploads(filmId, name, type, mime) VALUES(?, ?, ?, 'webm')", [id, webm_name, upload.kind], function(err, rows){
-                                        if(err) {
-                                            throw "Err: " + err + ": Could not record webm file[" + webm_name + "]";
-                                        }
+        console.log("MP4 stored with status 'uploading'");
 
-                                        console.log("Recorded webm file [" + webm_name + "]");
-                                    });
-                                });
-                        });
-                    });
+        console.log("MP4 conversion beginning...");
+        var proc_mp4 = new ffmpeg({ source: upload.path, timeout: 10000})
+            .withVideoCodec('libx264')
+            .withVideoBitrate('1500k')
+            .withAudioCodec('libfaac')
+            .withAudioBitrate('96k')
+            .withSize("640x360")
+            .toFormat('mp4')
+            .onProgress(function(progress) {
+                //console.log("MP4 format progress ..." + util.inspect(progress));
+            })
+            .saveToFile("uploads/"+mp4_name+".mp4", function(stdout, stderr) {
+                //onSuccess: change status to 0 [upload success]
+                console.log("MP4 conversion successful");
+                console.log("MP4 attempting to store with status 'upload success'");
+                connection.query("UPDATE uploads SET status=0 WHERE name=?", [mp4_name], function(err, rows){
+                    if(err)
+                        throw "Could not store mp4 upload with 'uploading' status.";
+
+                    console.log("MP4 stored with status 'upload success'");
+                });
             });
-        });
+
+        //onError: change status to 2 [fail upload]
+    });
+
+    //======== Store ogg file ===========
+    //insert into uploads with status 1 [uploading]
+    console.log("OGG attempting to store with status 'uploading'");
+    connection.query("INSERT INTO uploads(filmId, name, type, mime, status) VALUES(?, ?, ?, 'ogv', 1)", [id, ogv_name, upload.kind], function(err, rows){
+
+        if(err)
+            throw "Could not store OGG upload with 'uploading' status.";
+
+        console.log("OGG stored with status 'uploading'");
+
+        console.log("OGG conversion beginning...");
+        var proc_ogg = new ffmpeg({ source: upload.path, timeout: 10000 })
+            .withVideoCodec('libtheora')
+            .withVideoBitrate('1500k')
+            .withAudioCodec('libvorbis')
+            .withAudioBitrate('96k')
+            .withSize("640x360")
+            .toFormat('ogg')
+            .onProgress(function(progress) {
+                //console.log("OGG format progress ..." + progress);
+            })
+            .saveToFile("uploads/"+ogv_name+".ogv", function(stdout, stderr) {
+                //onSuccess: change status to 0 [upload success]
+                console.log("OGG conversion successful");
+                console.log("OGG attempting to store with status 'upload success'");
+                connection.query("UPDATE uploads SET status=0 WHERE name=?", [ogv_name], function(err, rows){
+                    if(err)
+                        throw "Could not store OGG upload with 'uploading' status.";
+
+                    console.log("OGG stored with status 'upload success'");
+                });
+            });
+
+        //onError: change status to 2 [fail upload]
+    });
+
+    //======== Store webm file ===========
+    //insert into uploads with status 1 [uploading]
+    console.log("WEBM attempting to store with status 'uploading'");
+    connection.query("INSERT INTO uploads(filmId, name, type, mime, status) VALUES(?, ?, ?, 'webm', 1)", [id, webm_name, upload.kind], function(err, rows){
+
+        if(err)
+            throw "Could not store WEBM upload with 'uploading' status.";
+
+        console.log("WEBM stored with status 'uploading'");
+
+        console.log("WEBM conversion beginning...");
+        var proc_webm = new ffmpeg({ source: upload.path, timeout: 10000 })
+            .withVideoCodec('libvpx')
+            .withVideoBitrate('1500k')
+            .withAudioCodec('libvorbis')
+            .withAudioBitrate('96k')
+            .withSize("640x360")
+            .toFormat('webm')
+            .onProgress(function(progress) {
+                //console.log("WEBM format progress ..." + progress);
+            })
+            .saveToFile("uploads/"+webm_name+".webm", function(stdout, stderr) {
+                //onSuccess: change status to 0 [upload success]
+                console.log("WEBM conversion successful");
+                console.log("WEBM attempting to store with status 'upload success'");
+                connection.query("UPDATE uploads SET status=0 WHERE name=?", [webm_name], function(err, rows){
+                    if(err)
+                        throw "Could not store WEBM upload with 'uploading' status.";
+
+                    console.log("WEBM stored with status 'upload success'");
+                });
+            });
+    });
 }
