@@ -220,7 +220,11 @@ function updateDraft(filmmakerId, upload, info){
 
                 console.log("Added new draft");
                 if(upload != null){
-                    updateUploadInfo(rows.insertId, upload);
+                    if(upload.kind == 2) {
+                        updateUploadPicInfo(rows.insertId, upload);
+                    }else{
+                        updateUploadVideoInfo(rows.insertId, upload);
+                    }
                 }
 
                 if(info != null){
@@ -230,7 +234,11 @@ function updateDraft(filmmakerId, upload, info){
        }else{
            console.log("Searched database with record");
            if(upload != null){
-               updateUploadInfo(rows[0].filmId, upload);
+               if(upload.kind == 2) {
+                   updateUploadPicInfo(rows[0].filmId, upload);
+               }else{
+                   updateUploadVideoInfo(rows[0].filmId, upload);
+               }
            }
 
            if(info != null){
