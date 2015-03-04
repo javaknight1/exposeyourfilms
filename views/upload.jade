@@ -15,6 +15,7 @@ block content
             a#film-select.btn.btn-primary.btn-sm Select Film file
             input#film-upload-file(type="file" style="display:none" name="film_file")
             input#film-upload-submit(type="submit" style="display:none")
+            input(type="hidden" name="saved" value="0")
     #film-timeline.timeline
       h4 Film Upload
         .progress.progress-striped.active
@@ -32,6 +33,7 @@ block content
             a#trailer-select.btn.btn-primary.btn-sm Select Trailer file
             input#trailer-upload-file(type="file" style="display:none" name="trailer_file")
             input#trailer-upload-submit(type="submit" style="display:none")
+            input(type="hidden" name="saved" value="0")
     #trailer-timeline.timeline
       h4 Trailer Upload
       .progress.progress-striped.active
@@ -49,27 +51,53 @@ block content
             a#cover-select.btn.btn-primary.btn-sm Select Cover Art file
             input#cover-upload-file(type="file" style="display:none" name="cover_file")
             input#cover-upload-submit(type="submit" style="display:none")
+            input(type="hidden" name="saved" value="0")
     #cover-timeline.timeline
       h4 Cover Art Upload
       .progress.progress-striped.active
         #cover-upload-progress.progress-bar.progress-bar-warning
-    form#film-info-container(method="post" action="/upload/info" ).form-horizontal.well.upload-container
+    form#film-info-container(method="post" action="/upload/info" ).form-horizontal.well
         fieldset
             legend Film Information
             .form-group
-                label.col-lg-2.control-label(for='inputEmail') Title
+                label.col-lg-2.control-label(for='inputTitle') Title
                 .col-lg-10
-                    input#inputEmail.form-control(type='text', placeholder='title')
+                    input#inputEmail.form-control(type='text', placeholder='title of film' name="title")
+            .form-group
+                label.col-lg-2.control-label(for='inputRent') Rental Price
+                .input-group
+                    span.input-group-addon $
+                    .col-lg-4
+                        input.form-control(type='text' name="rent" placeholder='price to rent film')
+                    .col-lg-2
+                        span.input-group-addon
+                            .checkbox
+                                label
+                                    input(type='checkbox')
+                                    | Remove rental functionality
+            .form-group
+                label.col-lg-2.control-label(for='inputPurchase') Purchase Price
+                .input-group
+                    span.input-group-addon $
+                    .col-lg-4
+                        input.form-control(type='text' name="rent" placeholder='price to purchase film')
+                    .col-lg-2
+                        span.input-group-addon
+                            .checkbox
+                                label
+                                    input(type='checkbox')
+                                    | Remove purchase functionality
+
             .form-group
                 label.col-lg-2.control-label(for='textArea') Description
                 .col-lg-10
-                    textarea#textArea.form-control(rows='3')
+                    textarea#textArea.form-control(rows='3' name="description" placeholder='give a small description of your film')
                     span.help-block
                         | 256 Characters
             .form-group
                 label.col-lg-2.control-label(for='select') Content Rating
                 .col-lg-10
-                    select#select.form-control
+                    select#select.form-control(name="rating")
                         option A
                         option B
                         option C
@@ -78,3 +106,4 @@ block content
                 .col-lg-10.col-lg-offset-2
                     button.btn.btn-default(type='reset') Cancel
                     button.btn.btn-primary(type='submit') Submit
+            input(type="hidden" name="saved" value="0")
