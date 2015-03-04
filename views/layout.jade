@@ -218,9 +218,8 @@ html(lang= "en")
                   beforeSubmit: function(data, form, options){
                       console.log("...Starting to send form...");
                       $('#cover-upload-container').slideUp("slow", function(){
-                        $('#cover-timeline').slideDown();
-                        //$('#trailer-upload-container').slideDown();
-                        //TODO: show data form to film
+                          $('#cover-timeline').slideDown();
+                          $('#film-info-container').slideDown();
                       });
                   },
                   uploadProgress: function(e, position, total, percent){

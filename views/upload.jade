@@ -53,3 +53,28 @@ block content
       h4 Cover Art Upload
       .progress.progress-striped.active
         #cover-upload-progress.progress-bar.progress-bar-warning
+    form#film-info-container(method="post" action="/upload/info" ).form-horizontal.well.upload-container
+        fieldset
+            legend Film Information
+            .form-group
+                label.col-lg-2.control-label(for='inputEmail') Title
+                .col-lg-10
+                    input#inputEmail.form-control(type='text', placeholder='title')
+            .form-group
+                label.col-lg-2.control-label(for='textArea') Description
+                .col-lg-10
+                    textarea#textArea.form-control(rows='3')
+                    span.help-block
+                        | 256 Characters
+            .form-group
+                label.col-lg-2.control-label(for='select') Content Rating
+                .col-lg-10
+                    select#select.form-control
+                        option A
+                        option B
+                        option C
+                        option F
+            .form-group
+                .col-lg-10.col-lg-offset-2
+                    button.btn.btn-default(type='reset') Cancel
+                    button.btn.btn-primary(type='submit') Submit
