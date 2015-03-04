@@ -104,7 +104,11 @@ module.exports = function(app, passport) {
     // ========= POST UPLOAD FILM FILE =========
     // Process to upload film file
     app.post('/upload/info', function(req, res){
-        var info = {};
+        var info = {
+            title: req.params.title,
+            description: req.params.description,
+            rating: req.params.rating
+        };
         updateDraft(req.user.id, null, info);
     });
 
