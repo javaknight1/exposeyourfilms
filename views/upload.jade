@@ -73,27 +73,30 @@ block content
                         span.input-group-addon
                             .checkbox
                                 label
-                                    input(type='checkbox')
+                                    input(type='checkbox' name="rent_check")
                                     | Remove rental functionality
             .form-group
                 label.col-lg-2.control-label(for='inputPurchase') Purchase Price
                 .input-group
                     span.input-group-addon $
                     .col-lg-4
-                        input.form-control(type='text' name="rent" placeholder='price to purchase film')
+                        input.form-control(type='text' name="purchase" placeholder='price to purchase film')
                     .col-lg-2
                         span.input-group-addon
                             .checkbox
                                 label
-                                    input(type='checkbox')
+                                    input(type='checkbox' name="puchase_check")
                                     | Remove purchase functionality
-
+            .form-group
+                label.col-lg-2.control-label(for='postDate') Release Date
+                .col-lg-10
+                    input(type="date" name="release_date")
             .form-group
                 label.col-lg-2.control-label(for='textArea') Description
                 .col-lg-10
                     textarea#textArea.form-control(rows='3' name="description" placeholder='give a small description of your film')
                     span.help-block
-                        | 256 Characters
+                        | 256 Characters Left
             .form-group
                 label.col-lg-2.control-label(for='select') Content Rating
                 .col-lg-10
@@ -104,6 +107,6 @@ block content
                         option F
             .form-group
                 .col-lg-10.col-lg-offset-2
-                    button.btn.btn-default(type='reset') Cancel
                     button.btn.btn-primary(type='submit') Submit
+                    button.btn.btn-default(type='reset') Cancel
             input(type="hidden" name="saved" value="0")
