@@ -23,11 +23,11 @@ DROP TABLE IF EXISTS `actor_associations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `actor_associations` (
-  `associationId` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `association_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `filmId` int(10) unsigned NOT NULL,
   `actorId` int(10) unsigned NOT NULL,
   `role` varchar(100) NOT NULL,
-  PRIMARY KEY (`associationId`),
+  PRIMARY KEY (`association_id`),
   KEY `filmId` (`filmId`,`actorId`),
   KEY `filmId_2` (`filmId`),
   KEY `actorId` (`actorId`),
@@ -228,15 +228,16 @@ DROP TABLE IF EXISTS `films`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `films` (
   `filmId` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `title` varchar(50) NOT NULL,
-  `filmmakerId` int(10) unsigned NOT NULL,
-  `release_date` date NOT NULL,
-  `post_date` date NOT NULL,
-  `expiration_date` date NOT NULL,
+  `title` varchar(50) DEFAULT NULL,
+  `filmmakerId` int(10) unsigned DEFAULT NULL,
+  `release_date` date DEFAULT NULL,
+  `post_date` date DEFAULT NULL,
+  `expiration_date` date DEFAULT NULL,
   `rent_price` float DEFAULT NULL,
   `buy_price` float DEFAULT NULL,
-  `rating` varchar(1) NOT NULL,
+  `rating` varchar(1) DEFAULT NULL,
   `description` varchar(500) DEFAULT NULL,
+  `draft` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`filmId`),
   KEY `filmmakerId` (`filmmakerId`),
   KEY `filmmakerId_2` (`filmmakerId`),
@@ -246,7 +247,7 @@ CREATE TABLE `films` (
   FULLTEXT KEY `title_2` (`title`),
   FULLTEXT KEY `title_3` (`title`,`description`),
   CONSTRAINT `films_ibfk_1` FOREIGN KEY (`filmmakerId`) REFERENCES `members` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=90 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=99 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -331,6 +332,7 @@ CREATE TABLE `login_attempts` (
 
 LOCK TABLES `login_attempts` WRITE;
 /*!40000 ALTER TABLE `login_attempts` DISABLE KEYS */;
+INSERT INTO `login_attempts` VALUES (18,'1424903635'),(18,'1425414622');
 /*!40000 ALTER TABLE `login_attempts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -519,13 +521,14 @@ DROP TABLE IF EXISTS `uploads`;
 CREATE TABLE `uploads` (
   `uploadId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `filmId` int(10) unsigned NOT NULL,
-  `name` varchar(10) NOT NULL,
+  `name` varchar(20) DEFAULT NULL,
   `type` int(11) NOT NULL COMMENT '0-> cover; 1->film_mp4; 2->film_ogv; 3->film_webm; 4->trailer_mp4; 5->trailer_ogv; 6->trailer_webm',
-  `mime` varchar(5) NOT NULL,
+  `mime` varchar(5) DEFAULT NULL,
+  `status` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`uploadId`),
   KEY `filmId` (`filmId`),
   CONSTRAINT `uploads_ibfk_1` FOREIGN KEY (`filmId`) REFERENCES `films` (`filmId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=215 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=248 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -578,4 +581,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-02-18 14:57:50
+-- Dump completed on 2015-03-06 23:34:09
