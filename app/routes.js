@@ -104,12 +104,98 @@ module.exports = function(app, passport) {
     // ========= POST UPLOAD FILM FILE =========
     // Process to upload film file
     app.post('/upload/info', function(req, res){
-        var info = {
-            title: req.params.title,
-            description: req.params.description,
-            rating: req.params.rating
-        };
-        updateDraft(req.user.id, null, info);
+        /*var info = {
+            title: req.body.title,
+            rent: req.body.rent,
+            purchase: req.body.purchase,
+            description: req.body.description,
+            rating: req.body.rating
+        };*/
+
+        var info = {};
+        var errors = {'status':'400'};
+
+        if(typeof req.body != "undefined"){
+
+            if(typeof req.body.title != "undefined"){
+                info.title = req.body.title;
+            }else{
+                errors.title = "No title given.";
+            }
+
+            if(typeof req.body.description != "undefined"){
+                info.description = req.body.description;
+            }else{
+                errors.description = "No description.";
+            }
+
+            if(typeof req.body.rent_check == "undefined" && req.body.rent_check != "on"){
+
+                if(typeof req.body.rent != "undefined"){
+                    var r = parseInt(req.body.rent);
+                    if(!isNaN(r)){
+                        info.rent = r;
+                    }else{
+                        errors.rent = "The rent price not a valid currency value.";
+                    }
+                }else{
+                    errors.rent = "No rent price was given when rent given checked.";
+                }
+            }
+
+            if(typeof req.body.purchase_check == "undefined" && req.body.purchase_check != "on"){
+
+                if(typeof req.body.purchase != "undefined"){
+
+                    var p = parseInt(req.body.purchase);
+                    if(!isNaN(p)){
+                        info.purchase = p;
+                    }else{
+                        errors.purchase = "The rent price not a valid currency value.";
+                    }
+                }else{
+                    errors.purchase = "No purchase price was given when rent given checked.";
+                }
+            }
+
+            if(typeof info.purchase == "undefined" && typeof info.rent == "undefined"){
+                errors.price = "Give either a rent or purchase price or both.";
+            }
+
+            if(typeof req.body.release_date != "undefined"){
+                var regex = /\d\d\d\d-\d\d-\d\d/;
+                if(req.body.release_date.match(regex)){
+                    var d = new Date();
+                    var post_date = (d.getYear()+1900) + "-" + d.getMonth() + "-" + d.getDate();
+                    //var exp_date = "";
+
+                    info.release = req.body.release_date;
+                    info.post = post_date;
+                    //info.exp = exp_date;
+                }
+            }
+
+            if(typeof req.body.rating != "undefined"){
+                info.rating = req.body.rating;
+            }else{
+                errors.rating = "No content rating was given.";
+            }
+
+        }else{
+            //handle when request is empty
+            errors.body = "There was no information given.";
+        }
+
+        //check if any errors where found
+        if(typeof errors.body != "undefined" || typeof errors.title != "undefined" ||
+            typeof errors.description != "undefined" || typeof errors.rent != "undefined" ||
+            typeof errors.purchase != "undefined" || typeof errors.post_date != "undefined" ||
+            typeof errors.rating != "undefined"){
+            //res.end(errors);
+        }
+
+        console.log(info);
+        //updateDraft(req.user.id, null, info);
     });
 
     // ========= POST UPLOAD =========
@@ -254,8 +340,9 @@ function updateDraft(filmmakerId, upload, info){
 
 function updateFilmInfo(id, info){
 
+    connection.query("UPDATE films SET title=? AND rating=? AND description=? WHERE", [id, info.title, info.rating, info.description], function(err, rows){
 
-
+    });
 }
 
 function updateUploadPicInfo(id, upload){
