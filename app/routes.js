@@ -104,13 +104,6 @@ module.exports = function(app, passport) {
     // ========= POST UPLOAD FILM FILE =========
     // Process to upload film file
     app.post('/upload/info', function(req, res){
-        /*var info = {
-            title: req.body.title,
-            rent: req.body.rent,
-            purchase: req.body.purchase,
-            description: req.body.description,
-            rating: req.body.rating
-        };*/
 
         var info = {};
         var errors = {'status':'400'};
@@ -132,7 +125,7 @@ module.exports = function(app, passport) {
             if(typeof req.body.rent_check == "undefined" && req.body.rent_check != "on"){
 
                 if(typeof req.body.rent != "undefined"){
-                    var r = parseInt(req.body.rent);
+                    var r = parseFloat(req.body.rent);
                     if(!isNaN(r)){
                         info.rent = r;
                     }else{
@@ -141,13 +134,16 @@ module.exports = function(app, passport) {
                 }else{
                     errors.rent = "No rent price was given when rent given checked.";
                 }
+            }else{
+                info.rent = null;
             }
+
 
             if(typeof req.body.purchase_check == "undefined" && req.body.purchase_check != "on"){
 
                 if(typeof req.body.purchase != "undefined"){
 
-                    var p = parseInt(req.body.purchase);
+                    var p = parseFloat(req.body.purchase);
                     if(!isNaN(p)){
                         info.purchase = p;
                     }else{
@@ -156,9 +152,11 @@ module.exports = function(app, passport) {
                 }else{
                     errors.purchase = "No purchase price was given when rent given checked.";
                 }
+            }else{
+                info.purchase = null;
             }
 
-            if(typeof info.purchase == "undefined" && typeof info.rent == "undefined"){
+            if(info.purchase == null && info.rent == null){
                 errors.price = "Give either a rent or purchase price or both.";
             }
 
@@ -166,7 +164,7 @@ module.exports = function(app, passport) {
                 var regex = /\d\d\d\d-\d\d-\d\d/;
                 if(req.body.release_date.match(regex)){
                     var d = new Date();
-                    var post_date = (d.getYear()+1900) + "-" + d.getMonth() + "-" + d.getDate();
+                    var post_date = (d.getYear()+1900) + "-" + (d.getMonth()+1) + "-" + d.getDate();
                     //var exp_date = "";
 
                     info.release = req.body.release_date;
@@ -195,7 +193,7 @@ module.exports = function(app, passport) {
         }
 
         console.log(info);
-        //updateDraft(req.user.id, null, info);
+        updateDraft(req.user.id, null, info);
     });
 
     // ========= POST UPLOAD =========
@@ -325,13 +323,16 @@ function updateDraft(filmmakerId, upload, info){
            console.log("Searched database with record");
            if(upload != null){
                if(upload.kind == 2) {
+                   console.log("Updating cover art");
                    updateUploadPicInfo(rows[0].filmId, upload);
                }else{
+                   console.log("Updating film or trailer video");
                    updateUploadVideoInfo(rows[0].filmId, upload);
                }
            }
 
            if(info != null){
+               console.log("Updating film info");
                updateFilmInfo(rows[0].filmId, info);
            }
        }
@@ -340,8 +341,11 @@ function updateDraft(filmmakerId, upload, info){
 
 function updateFilmInfo(id, info){
 
-    connection.query("UPDATE films SET title=? AND rating=? AND description=? WHERE", [id, info.title, info.rating, info.description], function(err, rows){
+    connection.query("UPDATE films SET title=?, rating=?, description=?, rent_price=?, buy_price=? WHERE filmId=?", [info.title, info.rating, info.description, info.rent, info.purchase, id], function(err, rows){
+        if(err)
+            throw "Could not update film's info";
 
+        console.log("Updated film info successfully");
     });
 }
 
