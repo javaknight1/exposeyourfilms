@@ -1,0 +1,46 @@
+doctype html
+html(lang= "en")
+  head
+    title Beta Sign Up
+
+    //main stylesheets
+    link(href='/stylesheets/beta.css', rel='stylesheet')
+
+    //bootstrap stysheets
+    link(href='/stylesheets/bootstrap.min.css', rel='stylesheet')
+  body(role= "document")
+    .beta-container
+      .row-title
+            .logo
+                img(src='/images/beta_logo.png')
+      if success
+        .row-sign
+          .row-sign-text
+            .sign-title
+              p.sign-title-q
+                | Thank You for signing up
+              p.sign-title-a
+                | You will be notificied soon on future updates
+          .transparent-background
+      else
+        .row-sign
+          .row-sign-text
+            .sign-title
+              p.sign-title-q
+                | Want to earn money from your films?
+              p.sign-title-a
+                | Sign Up for exclusive access to be able to rent and sell your films
+            p.form-title
+              | Beta Sign Up
+            |                 
+            form.login(method="post" action="/beta")
+              input(type='text' placeholder='Email' name="email")
+              |                              
+              input.btn.btn-success.btn-sm(type='submit', value='Sign Up')
+              |                 
+          .transparent-background
+    //main jquery script
+    script(src='/javascripts/jquery-2.1.3.min.js')
+
+    //used for bootstrap plugins like the banner
+    script(src='/javascripts/bootstrap.min.js')

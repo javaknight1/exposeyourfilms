@@ -11,6 +11,25 @@ connection.query('USE ' + dbconfig.database);
 
 module.exports = function(app, passport) {
 
+    // ======= BETA SIGN UP PAGE =========
+    app.get('/beta', function(req, res) {
+        res.render('beta', {});
+    });
+
+    //store user's email
+    app.post('/beta', function(req, res){
+
+        if(typeof req.body.email != "undefined"){
+            //insert email into database
+            connection.query("INSERT INTO beta(email) VALUES(?)", [req.body.email], function(err, rows){
+                if(err)
+                    throw "Could not sign up for beta";
+
+                res.render('beta', { success: "1"});
+            });
+        }
+    });
+
     // // ======== HOME PAGE ========
     app.get('/', function(req, res) {
         res.render('home', {
@@ -189,7 +208,7 @@ module.exports = function(app, passport) {
             typeof errors.description != "undefined" || typeof errors.rent != "undefined" ||
             typeof errors.purchase != "undefined" || typeof errors.post_date != "undefined" ||
             typeof errors.rating != "undefined"){
-            //res.end(errors);
+            res.end(errors);
         }
 
         console.log(info);
@@ -200,22 +219,11 @@ module.exports = function(app, passport) {
     // After everything has been uploaded, finally process the film into db
     app.post('/upload/save', function(req, res){
 
-        //make sure that everything within the draft has been set
-        if(typeof req.user.draft != "undefined" &&
-            typeof req.user.draft.film != "undefined" &&
-            typeof req.user.draft.trailer != "undefined" &&
-            typeof req.user.draft.cover != "undefined" &&
-            typeof req.user.draft.info != "undefined"){
+        //make sure all info has been entered
+        //make sure all upload files (film, trailer, and cover art) have been uploaded
+        //it's ok if film is still converting to video formats
 
-            //double check all information has been given
-            //double check information is valid
-
-            //convert files name to unique names
-            //move them to corresponding dirs
-            //convert film and trailer to mp4, ogv, and webm files
-
-            //insert info into db
-        }
+        //if ok, change film draft status to 0
 
     });
 
@@ -223,6 +231,10 @@ module.exports = function(app, passport) {
     // Delete a draft from the db as well as the files saved
     app.post('/delete/draft', function(req, res){
 
+        //get upload names
+        //delete files
+
+        //delete film from table
     });    
 
     // ======== LOGOUT PAGE ========
@@ -387,7 +399,7 @@ function updateUploadVideoInfo(id, upload){
             .withSize("640x360")
             .toFormat('mp4')
             .onProgress(function(progress) {
-                //console.log("MP4 format progress ..." + util.inspect(progress));
+                console.log("MP4 conversion => " + util.inspect(progress.percent) + "%");
             })
             .saveToFile("uploads/"+mp4_name+".mp4", function(stdout, stderr) {
                 //onSuccess: change status to 0 [upload success]
@@ -423,7 +435,7 @@ function updateUploadVideoInfo(id, upload){
             .withSize("640x360")
             .toFormat('ogg')
             .onProgress(function(progress) {
-                //console.log("OGG format progress ..." + progress);
+                console.log("OGG conversion => " + util.inspect(progress.percent) + "%");
             })
             .saveToFile("uploads/"+ogv_name+".ogv", function(stdout, stderr) {
                 //onSuccess: change status to 0 [upload success]
@@ -459,7 +471,7 @@ function updateUploadVideoInfo(id, upload){
             .withSize("640x360")
             .toFormat('webm')
             .onProgress(function(progress) {
-                //console.log("WEBM format progress ..." + progress);
+                console.log("WEBM conversion => " + util.inspect(progress.percent) + "%");
             })
             .saveToFile("uploads/"+webm_name+".webm", function(stdout, stderr) {
                 //onSuccess: change status to 0 [upload success]

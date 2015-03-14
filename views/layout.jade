@@ -147,12 +147,7 @@ html(lang= "en")
                       });
                   },
                   uploadProgress: function(e, position, total, percent){
-                      console.log("Upload Process");
-                      console.log("==============");
-                      console.log("Position: " + position);
-                      console.log("Total: " + total);
-                      console.log("??: " + (position/total));
-                      console.log("Percent: " + percent);
+                      console.log("Percent (film): " + percent);
                       var realpercent = (position/total) * 100;
                       $('#film-upload-progress').css("width", realpercent + "%");
                   },
@@ -161,7 +156,7 @@ html(lang= "en")
                   },
                   success: function(response) {
                       console.log("Success!!");
-                      $('#film-upload-progress').css("saved", 1);
+                      $('#film-saved').val(1);
                   }
               });
             }
@@ -187,11 +182,7 @@ html(lang= "en")
                       });
                   },
                   uploadProgress: function(e, position, total, percent){
-                      console.log("Upload Process");
-                      console.log("==============");
-                      console.log("Position: " + position);
-                      console.log("Total: " + total);
-                      console.log("Percent: " + percent);
+                      console.log("Percent (trailer): " + percent);
                       var realpercent = (position/total) * 100;
                       $('#trailer-upload-progress').css("width", realpercent + "%");
                   },
@@ -200,7 +191,7 @@ html(lang= "en")
                   },
                   success: function(response) {
                       console.log("Success!!");
-                      $('#trailer-upload-progress').css("saved", 1);
+                      $('#trailer-saved').val(1);
                   }
               });
             }
@@ -226,11 +217,7 @@ html(lang= "en")
                       });
                   },
                   uploadProgress: function(e, position, total, percent){
-                      console.log("Upload Process");
-                      console.log("==============");
-                      console.log("Position: " + position);
-                      console.log("Total: " + total);
-                      console.log("Percent: " + percent);
+                      console.log("Percent (cover art): " + percent);
                       var realpercent = (position/total) * 100;
                       $('#cover-upload-progress').css("width", realpercent + "%");
                   },
@@ -239,7 +226,7 @@ html(lang= "en")
                   },
                   success: function(response) {
                       console.log("Success!!");
-                      $('#cover-upload-progress').css("saved", 1);
+                      $('#cover-saved').val(1);
                   }
               });
             }

@@ -15,7 +15,7 @@ block content
             a#film-select.btn.btn-primary.btn-sm Select Film file
             input#film-upload-file(type="file" style="display:none" name="film_file")
             input#film-upload-submit(type="submit" style="display:none")
-            input(type="hidden" name="saved" value="0")
+            input(type="hidden" name="film-saved" value="0")
     #film-timeline.timeline
       h4 Film Upload
         .progress.progress-striped.active
@@ -33,7 +33,7 @@ block content
             a#trailer-select.btn.btn-primary.btn-sm Select Trailer file
             input#trailer-upload-file(type="file" style="display:none" name="trailer_file")
             input#trailer-upload-submit(type="submit" style="display:none")
-            input(type="hidden" name="saved" value="0")
+            input(type="hidden" id="trailer-saved" value="0")
     #trailer-timeline.timeline
       h4 Trailer Upload
       .progress.progress-striped.active
@@ -51,7 +51,7 @@ block content
             a#cover-select.btn.btn-primary.btn-sm Select Cover Art file
             input#cover-upload-file(type="file" style="display:none" name="cover_file")
             input#cover-upload-submit(type="submit" style="display:none")
-            input(type="hidden" name="saved" value="0")
+            input(type="hidden" name="cover-saved" value="0")
     #cover-timeline.timeline
       h4 Cover Art Upload
       .progress.progress-striped.active
