@@ -32,8 +32,13 @@ module.exports = function(app, passport) {
 
     // // ======== HOME PAGE ========
     app.get('/', function(req, res) {
+
+        var user = "";
+        if(typeof req.user != "undefined" && typeof req.user.username != "undefined")
+            user = req.user.username;
+
         res.render('home', {
-            user: req.user.username
+            user: user
         });
     });
 
