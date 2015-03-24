@@ -104,9 +104,14 @@ module.exports = function(app, passport) {
 
     // ========= FILMMAKER PAGE ===========
     // Display a specific filmmaker's account page
-    app.get('/filmmaker/:id', getFilmmakerInfo, function(){
+    app.get('/filmmaker/:id', getFilmmakerInfo, function(req, res){
+
+        var user = "";
+        if(typeof req.user != "undefined" && typeof req.user.username != "undefined")
+            user = req.user.username;
+
         res.render('filmmaker', {
-            user: req.user.username
+            user: user
         });
     });
 

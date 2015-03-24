@@ -1,3 +1,36 @@
 extend layout
 
 block content
+    .container(style='margin-top: 20px; margin-bottom: 20px;')
+          .row.panel
+            .col-md-4.bg_blur
+              a.btn.btn-primary.btn-lg.follow_btn.hidden-xs(href='#') Follow
+            .col-md-8.col-xs-12
+              img.img-thumbnail.picture.hidden-xs(src='http://lorempixel.com/output/people-q-c-100-100-1.jpg')
+              img.img-thumbnail.visible-xs.picture_mob(src='http://lorempixel.com/output/people-q-c-100-100-1.jpg')
+              .header
+                h1 Lorem Ipsum
+                h4 Web Developer
+                span
+                  | Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit..."
+                  | "There is no one who loves pain itself, who seeks after it and wants to have it, simply because it is pain..."
+          .row.nav
+            .col-md-4
+            .col-md-8.col-xs-12(style='margin: 0px;padding: 0px;')
+              .col-md-6.col-xs-6.well.well-custom-stat
+                |  16 Followers
+              .col-md-6.col-xs-6.well.well-custom-stat
+                |  14 Views
+          .row.films
+            .col-md-12
+                h3 Current Films Available
+                .film-container
+                    - for (var i = 0; i < 1; i++) {
+                        .film-container-row
+                            - for(var j = 0; j < 3; j++) {
+                                - var id = j;
+                                .film-link
+                                    a(href='/film?id='+id)
+                                        img.brightness(src='/images/movie_covers/'+id+'.jpg')
+                            - }
+                    - }
