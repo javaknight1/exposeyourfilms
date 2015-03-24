@@ -30,7 +30,7 @@ module.exports = function(app, passport) {
         }
     });
 
-    // // ======== HOME PAGE ========
+    // ======== HOME PAGE ========
     app.get('/', function(req, res) {
 
         var user = "";
@@ -72,7 +72,15 @@ module.exports = function(app, passport) {
 
     // ======== ACCOUNT PAGE ========
     app.get('/account', isLoggedIn, function(req, res) {
-        req.user.activeaccount = "yuppie";
+        
+        //TODO: [Filmmaker] Get list of uploaded films and information
+        //TODO: Get list of films purchased
+        //TODO: Get list of films currently renting
+        //TODO: Get list of films favorited
+        //TODO: Get list of films queued
+        //TODO: Get list of filmmaker following
+        //TODO: Get current settings
+
         res.render('account', {
             user : req.user.username, // get the user out of session and pass to template
             status: req.user.membership
@@ -82,10 +90,23 @@ module.exports = function(app, passport) {
     // ======== FILM PAGE ==========
     // Given an id, display the general info of the specific film
     app.get('/film/:id', getFilmInfo, function(req, res){
+
+        //TODO: Query db for film's information
+
+        //TODO: If given film id doesn't exist, redirect to account page
+
         res.render('film', {
             user : req.user.username, // get the user out of session and pass to template
             filmId : req.film.id
             //status: req.status
+        });
+    });
+
+    // ========= FILMMAKER PAGE ===========
+    // Display a specific filmmaker's account page
+    app.get('/filmmaker/:id', getFilmmakerInfo, function(){
+        res.render('filmmaker', {
+            user: req.user.username
         });
     });
 
@@ -218,6 +239,7 @@ module.exports = function(app, passport) {
 
         console.log(info);
         updateDraft(req.user.id, null, info);
+        //send success response
     });
 
     // ========= POST UPLOAD =========
@@ -296,6 +318,22 @@ function getFilmInfo(req, res, next){
     next();
 }
 
+function getFilmmakerInfo(req, res, next){
+
+    req.filmmaker = {};
+
+    //Not a valid filmmaker id was given
+    if(req.params.id === 0){
+        res.redirect('/');
+    }
+
+    req.filmmaker.id = req.params.id;
+    // Query for filmmaker info
+    // Query to see if user is following filmmaker
+
+    next();
+}
+
 function createRandomName(){
     var text = "";
     var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -358,7 +396,7 @@ function updateDraft(filmmakerId, upload, info){
 
 function updateFilmInfo(id, info){
 
-    connection.query("UPDATE films SET title=?, rating=?, description=?, rent_price=?, buy_price=? WHERE filmId=?", [info.title, info.rating, info.description, info.rent, info.purchase, id], function(err, rows){
+    connection.query("UPDATE films SET title=?, rating=?, description=?, rent_price=?, buy_price=?, release_date=?, post_date=? WHERE filmId=?", [info.title, info.rating, info.description, info.rent, info.purchase, info.release, info.post, id], function(err, rows){
         if(err)
             throw "Could not update film's info";
 

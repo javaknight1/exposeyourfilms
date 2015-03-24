@@ -103,6 +103,20 @@ html(lang= "en")
       $(document).ready(function() {
         'use strict';
 
+        function isAllComplete(){
+          var filmUploadVal = $('#film-saved').val();
+          var trailerUploadVal = $('#trailer-saved').val();
+          var coverUploadVal = $('#cover-saved').val();
+          var infoUploadVal = $('#info-saved').val();
+
+          if(filmUploadVal === 1 && trailerUploadVal === 1 &&
+            coverUploadVal === 1 && infoUploadVal === 1){
+            return true;
+          }else{
+            return false;
+          }
+        }
+
         // Dropzone graphical tools
         // ======================
         var dropZone = $('#drop-zone-film');
@@ -144,6 +158,7 @@ html(lang= "en")
                       $('#film-upload-container').slideUp("slow", function(){
                         $('#film-timeline').slideDown();
                         $('#trailer-upload-container').slideDown();
+                        $('#upload-warning').show();
                       });
                   },
                   uploadProgress: function(e, position, total, percent){
@@ -157,6 +172,9 @@ html(lang= "en")
                   success: function(response) {
                       console.log("Success!!");
                       $('#film-saved').val(1);
+                      if(ifAllComplete()){
+                        //go to account page
+                      }
                   }
               });
             }
@@ -179,6 +197,7 @@ html(lang= "en")
                       $('#trailer-upload-container').slideUp("slow", function(){
                         $('#trailer-timeline').slideDown();
                         $('#cover-upload-container').slideDown();
+                        $('#upload-warning').show();
                       });
                   },
                   uploadProgress: function(e, position, total, percent){
@@ -192,6 +211,9 @@ html(lang= "en")
                   success: function(response) {
                       console.log("Success!!");
                       $('#trailer-saved').val(1);
+                      if(ifAllComplete()){
+                        //go to account page
+                      }
                   }
               });
             }
@@ -214,6 +236,7 @@ html(lang= "en")
                       $('#cover-upload-container').slideUp("slow", function(){
                           $('#cover-timeline').slideDown();
                           $('#film-info-container').slideDown();
+                          $('#upload-warning').show();
                       });
                   },
                   uploadProgress: function(e, position, total, percent){
@@ -227,6 +250,9 @@ html(lang= "en")
                   success: function(response) {
                       console.log("Success!!");
                       $('#cover-saved').val(1);
+                      if(ifAllComplete()){
+                        //go to account page
+                      }
                   }
               });
             }
