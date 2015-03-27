@@ -1,13 +1,15 @@
 .row
     //left column
     .col-md-3
-      .text-center
-        img.avatar.img-circle(src='/images/filmer_icon.png', alt='avatar')
-        |           
-        h6 Upload a different photo...
-        |           
-        |           
-        input.form-control(type='file')
+      - if(status == 0) {
+        .text-center
+          img.avatar.img-circle(src='/images/filmer_icon.png', alt='avatar')
+          |           
+          h6 Upload personal icon....coming soon
+          //- |           
+          //- |           
+          //- input.form-control(type='file')
+      - }
     // edit form column
     .col-md-9.personal-info
       .alert.alert-info.alert-dismissable

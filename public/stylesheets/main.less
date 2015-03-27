@@ -120,7 +120,7 @@ html, body {
 }
 
 .film-link {
-	border: 5px ridge orange;
+	border: 5px solid rgb(224, 224, 224);
 	border-radius: 3px;
 	float: left;	
 	margin: 10px
@@ -220,3 +220,94 @@ html, body {
 .avatar-small{
     width: 35%;
 }
+
+.coverart{
+    float:left;
+    width:25%;
+}
+
+.film_cover {
+    margin-bottom: 15px;
+    position: relative;
+    float: left;
+    height: 400px;
+    width: 100%;
+}
+.film_image {
+    position: absolute;
+    width:100%;
+    box-shadow: 5px 5px 20px #444444;
+}
+.fill_image {
+    width: 100%;
+}
+.overlay{
+    opacity: 0;
+}
+
+.description {
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.film_button {
+    padding-bottom: 10px;
+}
+
+.btn-full {
+    width: 100%;
+}
+
+h5 {
+    margin-bottom: 2px;
+    border-radius: 5px;
+    color: #FFF;
+    padding: 5px 10px;
+    font-family: Arial,sans-serif;
+}
+
+/* headlines with lines */
+.decorated{
+     overflow: hidden;
+     text-align: center;
+ }
+.decorated > span{
+    position: relative;
+    display: inline-block;
+}
+.decorated > span:before, .decorated > span:after{
+    content: '';
+    position: absolute;
+    top: 50%;
+    border-bottom: 1px solid;
+    width: 625px; /* half of limiter*/
+    margin: 0 5px;
+}
+.decorated > span:before{
+    right: 100%;
+}
+.decorated > span:after{
+    left: 100%;
+}
+
+// .fav_title, .queue_title, .rob_title{
+//     text-align: center;
+//     position: relative;
+//     line-height: 0;
+//     margin-bottom: 10px;
+//     clear: both;
+// }
+
+// .fav_title::after, .queue_title::after, .rob_title::after  {
+//     content: "";
+//     width: 100%;
+//     background-color: transparent;
+//     display: block;
+//     height: 1px;
+//     border-top: 1px solid #e7e7e7;
+//     position: absolute;
+//     top: 50%;
+//     margin-top: -1px;
+//     z-index: 1;
+//     border-top: 1px solid #555;
+// }

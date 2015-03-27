@@ -102,6 +102,12 @@ module.exports = function(app, passport) {
         });
     });
 
+    // ========= EDIT LIST ===========
+    // Add remove a film from one fo the user's lists
+    app.post('/edit/list', function(req, res){
+         
+    });
+
     // ========= FILMMAKER PAGE ===========
     // Display a specific filmmaker's account page
     app.get('/filmmaker/:id', getFilmmakerInfo, function(req, res){

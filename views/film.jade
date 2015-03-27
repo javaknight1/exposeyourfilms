@@ -4,87 +4,106 @@ block content
   .container.page-container
       .well
         .media
-          a.pull-left(href='#')
-            img.media-object(src='/images/movie_covers/#{filmId}.jpg')
-          |   &#x9;&#x9;
+          .coverart
+            .film_cover
+              .film_image
+                img.media-object.film_image(src='/images/movie_covers/#{filmId}.jpg')
+              .film_image
+                img.media-object.film_image.overlay(src='/images/play_overlay_icon.png')
+            |   &#x9;&#x9;
+            .film_buttons
+              #favs.film_button
+                //h5.decorated Favorites
+                .fav_button
+                  input#favorite_button.list.btn.btn-default.btn-block(list="favorite" type="submit" value="Add to Favorites")
+              #queues.film_button
+                //h5.decorated Queue
+                .queue_button
+                  input#queue_button.list.btn.btn-default.btn-block(list="queue" type="submit" value="Add to Queue")
+              #robs.film_button
+                //h5.decorated Purchase or Rent
+                .rob_button.btn-group
+                  input#purchase_button.list.btn.btn-default.btn-full(list="purchase" type="submit" value="Purchase for $30.00")
+                  input#rent_button.list.btn.btn-default.btn-full(list="rent" type="submit" value="Rent for $3.00")
           .media-body
-            h4.media-heading Receta 1
-            |           
-            p.text-right By Francisco
-            |           
-            p
-              | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate.
-              | Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero. Aenean sit amet felis
-              | dolor, in sagittis nisi. Sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan.
-              | Aliquam in felis sit amet augue.
-              | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate.
-              | Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero. Aenean sit amet felis
-              | dolor, in sagittis nisi. Sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan.
-              | Aliquam in felis sit amet augue.
-              | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate.
-              | Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero. Aenean sit amet felis
-              | dolor, in sagittis nisi. Sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan.
-              | Aliquam in felis sit amet augue.
-              | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate.
-              | Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero. Aenean sit amet felis
-              | dolor, in sagittis nisi. Sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan.
-              | Aliquam in felis sit amet augue.
-              | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate.
-              | Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero. Aenean sit amet felis
-              | dolor, in sagittis nisi. Sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan.
-              | Aliquam in felis sit amet augue.
-              | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate.
-              | Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero. Aenean sit amet felis
-              | dolor, in sagittis nisi. Sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan.
-              | Aliquam in felis sit amet augue.
-              | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate.
-              | Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero. Aenean sit amet felis
-              | dolor, in sagittis nisi. Sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan.
-              | Aliquam in felis sit amet augue.
-              | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate.
-              | Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero. Aenean sit amet felis
-              | dolor, in sagittis nisi. Sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan.
-              | Aliquam in felis sit amet augue.
-            |           
-            ul.list-inline.list-unstyled
-              li
+            .description
+              h4.media-heading Receta 1
+              |           
+              p.text-right By Francisco
+              |           
+              p
+                | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate.
+                | Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero. Aenean sit amet felis
+                | dolor, in sagittis nisi. Sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan.
+                | Aliquam in felis sit amet augue.
+                | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate.
+                | Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero. Aenean sit amet felis
+                | dolor, in sagittis nisi. Sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan.
+                | Aliquam in felis sit amet augue.
+                | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate.
+                | Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero. Aenean sit amet felis
+                | dolor, in sagittis nisi. Sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan.
+                | Aliquam in felis sit amet augue.
+                | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate.
+                | Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero. Aenean sit amet felis
+                | dolor, in sagittis nisi. Sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan.
+                | Aliquam in felis sit amet augue.
+                | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate.
+                | Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero. Aenean sit amet felis
+                | dolor, in sagittis nisi. Sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan.
+                | Aliquam in felis sit amet augue.
+                | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate.
+                | Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero. Aenean sit amet felis
+                | dolor, in sagittis nisi. Sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan.
+                | Aliquam in felis sit amet augue.
+                | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate.
+                | Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero. Aenean sit amet felis
+                | dolor, in sagittis nisi. Sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan.
+                | Aliquam in felis sit amet augue.
+                | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate.
+                | Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero. Aenean sit amet felis
+                | dolor, in sagittis nisi. Sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan.
+                | Aliquam in felis sit amet augue.
+              |           
+              ul.list-inline.list-unstyled
+                li
+                  span
+                    i.glyphicon.glyphicon-calendar
+                    |  2 days, 8 hours
+                |             
+                li |
+                |             
                 span
-                  i.glyphicon.glyphicon-calendar
-                  |  2 days, 8 hours
-              |             
-              li |
-              |             
-              span
-                i.glyphicon.glyphicon-comment
-                |  2 comments
-              |             
-              li |
-              |             
-              span
-                i.glyphicon.glyphicon-film
-                |  200 views
-              |             
-              li |
-              |             
-              li
-                span.glyphicon.glyphicon-star
-                |                         
-                span.glyphicon.glyphicon-star
-                |                         
-                span.glyphicon.glyphicon-star
-                |                         
-                span.glyphicon.glyphicon-star
-                |                         
-                span.glyphicon.glyphicon-star-empty
-              |             
-              li |
-              |             
-              li
-                a.film-edit(href="#")
-                  span
-                    i.glyphicon.glyphicon-pencil
-                  | 
-                a.film-delete(href="#")              
-                  span
-                    i.glyphicon.glyphicon-trash
+                  i.glyphicon.glyphicon-comment
+                  |  2 comments
+                |             
+                li |
+                |             
+                span
+                  i.glyphicon.glyphicon-film
+                  |  200 views
+                |             
+                li |
+                |             
+                li
+                  span.glyphicon.glyphicon-star
+                  |                         
+                  span.glyphicon.glyphicon-star
+                  |                         
+                  span.glyphicon.glyphicon-star
+                  |                         
+                  span.glyphicon.glyphicon-star
+                  |                         
+                  span.glyphicon.glyphicon-star-empty
+                |             
+                li |
+                |             
+                li
+                  a.film-edit(href="#")
+                    span
+                      i.glyphicon.glyphicon-pencil
+                    | 
+                  a.film-delete(href="#")              
+                    span
+                      i.glyphicon.glyphicon-trash
       |    
