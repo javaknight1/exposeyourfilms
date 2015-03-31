@@ -1,6 +1,7 @@
 // app/routes.js
 var util        = require("util"); 
-var fs          = require("fs-extra"); 
+var fs          = require("fs");
+var fsextra    = require("fs-extra"); 
 var mysql       = require('mysql');
 var dbconfig    = require('../config/database');
 var connection  = mysql.createConnection(dbconfig.connection);
@@ -270,9 +271,17 @@ module.exports = function(app, passport) {
     app.post('/delete/draft', function(req, res){
 
         //get upload names
-        //delete files
+        connection.query("SELECT uploads.name, uploads.mime FROM films WHERE filmmakerId=? AND draft=0 INNER JOIN uploads ON uploads.filmId = films.filmId", [req.user.id], function(err, rows){
 
-        //delete film from table
+            //delete files
+            for(var i = 0; i < rows.length; i++){
+                var path = "uploads/" + rows[i].name + "." + rows[i].mime;
+                fs.unlink(path, function(err){});
+            }
+
+            //delete data from database
+            connection.query("DELETE FROM films WHERE filmmakerId=? AND draft=0", [req.user.id], function(){});
+        });
     });    
 
     // ======== LOGOUT PAGE ========
@@ -459,7 +468,7 @@ function updateUploadVideoInfo(id, upload){
                 //onSuccess: change status to 0 [upload success]
                 console.log("MP4 conversion successful");
                 console.log("MP4 attempting to store with status 'upload success'");
-                connection.query("UPDATE uploads SET status=0 WHERE name=?", [mp4_name], function(err, rows){
+                connection.query("UPDATE uploads SET status=0 WHERE name=? AND filmId=? AND mime='mp4'", [mp4_name, id], function(err, rows){
                     if(err)
                         throw "Could not store mp4 upload with 'uploading' status.";
 
@@ -495,7 +504,7 @@ function updateUploadVideoInfo(id, upload){
                 //onSuccess: change status to 0 [upload success]
                 console.log("OGG conversion successful");
                 console.log("OGG attempting to store with status 'upload success'");
-                connection.query("UPDATE uploads SET status=0 WHERE name=?", [ogv_name], function(err, rows){
+                connection.query("UPDATE uploads SET status=0 WHERE name=? AND filmId=? AND mime='ogv'", [ogv_name, id], function(err, rows){
                     if(err)
                         throw "Could not store OGG upload with 'uploading' status.";
 
@@ -531,7 +540,7 @@ function updateUploadVideoInfo(id, upload){
                 //onSuccess: change status to 0 [upload success]
                 console.log("WEBM conversion successful");
                 console.log("WEBM attempting to store with status 'upload success'");
-                connection.query("UPDATE uploads SET status=0 WHERE name=?", [webm_name], function(err, rows){
+                connection.query("UPDATE uploads SET status=0 WHERE name=? AND filmId=? AND mime='webm'", [webm_name, id], function(err, rows){
                     if(err)
                         throw "Could not store WEBM upload with 'uploading' status.";
 
