@@ -84,7 +84,10 @@ module.exports = function(app, passport) {
 
         res.render('account', {
             user : req.user.username, // get the user out of session and pass to template
-            status: req.user.membership
+            status: req.user.membership,
+            first: req.user.firstname,
+            last: req.user.lastname,
+            email: req.user.email
         });
     });
 
