@@ -7,7 +7,6 @@ var bcrypt 		= require('bcrypt-nodejs');
 var sha         = require('js-sha512');
 var validator   = require('validator');
 var dbconfig 	= require('./database');
-var time		= require('time');
 var connection 	= mysql.createConnection(dbconfig.connection);
 
 connection.query('USE ' + dbconfig.database);
@@ -170,7 +169,7 @@ module.exports = function(passport) {
                 };
                 
                 //check if it's trying to be brute forced
-                var now = time.time();
+                var now = Math.floor(Date.now() / 1000);
                 var valid_attempts = now - (2 * 60 * 60);
                 var brute_query = "SELECT time FROM login_attempts WHERE user_id = " + u.id + " AND time > " + valid_attempts + "";
                 connection.query(brute_query, function(err, rows, fields){
