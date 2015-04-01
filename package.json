@@ -33,7 +33,6 @@
     "passport-twitter": "^1.0.2",
     "qs": "^2.3.3",
     "serve-favicon": "~2.2.0",
-    "time": "^0.11.0",
     "validator": "^3.30.0"
   }
 }
