@@ -128,6 +128,10 @@ module.exports = function(app, passport) {
     // ========= UPLOAD FILM PAGE =========
     // This is the form in which will allow the filmmaker to upload a new film
     app.get('/upload', isLoggedIn, isFilmmaker, /*getDraftSession,*/ function(req, res){
+
+        //delete any previous drafts
+        connection.query("DELETE FROM films WHERE filmmakerId=? AND draft=1", [req.user.id], function(err, rows){});
+
         res.render('upload', {
             user : req.user.username, // get the user out of session and pass to template
             status: req.user.membership
