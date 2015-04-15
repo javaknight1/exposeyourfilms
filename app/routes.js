@@ -1,7 +1,7 @@
 // app/routes.js
 var util        = require("util"); 
 var fs          = require("fs");
-var fsextra    = require("fs-extra"); 
+var fsextra     = require("fs-extra"); 
 var mysql       = require('mysql');
 var dbconfig    = require('../config/database');
 var connection  = mysql.createConnection(dbconfig.connection);
@@ -74,13 +74,13 @@ module.exports = function(app, passport) {
     // ======== ACCOUNT PAGE ========
     app.get('/account', isLoggedIn, function(req, res) {
         
-        //TODO: [Filmmaker] Get list of uploaded films and information
-        //TODO: Get list of films purchased
-        //TODO: Get list of films currently renting
-        //TODO: Get list of films favorited
-        //TODO: Get list of films queued
-        //TODO: Get list of filmmaker following
-        //TODO: Get current settings
+        //TODOQUERY: [Filmmaker] Get list of uploaded films and information
+        //TODOQUERY: Get list of films purchased
+        //TODOQUERY: Get list of films currently renting
+        //TODOQUERY: Get list of films favorited
+        //TODOQUERY: Get list of films queued
+        //TODOQUERY: Get list of filmmaker following
+        //TODOQUERY: Get current settings
 
         res.render('account', {
             user : req.user.username, // get the user out of session and pass to template
@@ -95,7 +95,9 @@ module.exports = function(app, passport) {
     // Given an id, display the general info of the specific film
     app.get('/film/:id', getFilmInfo, function(req, res){
 
-        //TODO: Query db for film's information
+        //TODOQUERY: Query db for ALL film's information
+
+        //TODOQUERY: Check if user favorited, queued, rented, or purchased film
 
         //TODO: If given film id doesn't exist, redirect to account page
 
@@ -119,6 +121,8 @@ module.exports = function(app, passport) {
         var user = "";
         if(typeof req.user != "undefined" && typeof req.user.username != "undefined")
             user = req.user.username;
+
+        //TODOQUERY: Check if following
 
         res.render('filmmaker', {
             user: user
